@@ -1,4 +1,4 @@
----
+<hr/>
 
 Overview: The product is low-cost vehicle cluster
 
