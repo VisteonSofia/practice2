@@ -2,7 +2,7 @@
 
 Overview: The product is low-cost vehicle cluster
 
----
+***
 
 CR1. The product shall support color display. 
 CR2. The product shall support independet functioning of vehicle information and HMI. 
