@@ -1,9 +1,9 @@
 Overview: The product is low-cost vehicle cluster
 
 
-CR1. The system shall support color Display
-CR2. The system requirers HMI and vechicle functions to be independent
-CR3. The system requires safety and integrity of communication
-CR4. The system shall support acoustic feedback
-CR5. The system shall support manifactury and service configuration
+CR1. Product shall support color display
+CR2. Product HMI and vechicle functions shall be independent
+CR3. Product shall ensure safe communication
+CR4. Product shall support acoustic feedback
+CR5. Product shall support manufactury and service configuration
 CR6. 
