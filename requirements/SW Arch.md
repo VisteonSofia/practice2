@@ -9,9 +9,7 @@ This document is intended to describe the Software Architecture of the practice2
 2.Software high level design
 
 The System Software shall be separated by two independent software modules - one for the primary software,
-called the application layer(IF1) and one for the graphic interface, called the HMI (IF2)
-Within each individual software module communication layer shall be defined. 
-A datastructure shall define the different types of interfaces used in the communication layer.
+called the application layer and one for the graphic interface, called the HMI. Within each individual software module communication layer shall be defined. A datastructure shall define the different types of interfaces used in the communication layer.
 
   2.1 Design constraints
   
