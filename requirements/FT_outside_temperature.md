@@ -1,3 +1,6 @@
+Ambient temperature
+	/revision 1/
+
 1.  Ambient Temperature. Overall Description  
 
 The Practice2 device shall display the ambient temperature, received from an internal transmitter, over a monochrome display.
