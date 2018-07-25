@@ -9,6 +9,8 @@ TO-DO:
 * Define HMI relevant behaviour e.g. SNA/ERR behaviour, decimal places to show, decimal separator symbol (, or .) , negative/positive sign visualization, position on the display etc
 * Define state machine
 
+![alt text](https://raw.githubusercontent.com/VisteonSofia/practice2/master/requirements/HMI_WIP.png)
+
 1. Speedometer
 * Speedometer will be comprised of Digital Value, Unit and Curved Scale
 * Speedometer indication will be positioned with top margin 64px and left margin 16px
