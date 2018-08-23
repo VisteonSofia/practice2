@@ -21,26 +21,27 @@ called the application layer and one for the graphic interface, called the HMI. 
   
   2.2.Design decisions
     
-  2.2.1 Communication 
+   2.2.1 Communication 
     
-  2.2.1.1 Protocol IPC
+   (1) Protocol IPC
     
-  A datastructue exchange shall be defined. The data shall be exchanged one-         directional from IS1 to IS2, where a feedback channel is defined from IS2 to IS1.  The communication from IS1 to IS2 is exchanged with 11bits messages, where the frame will be separated as following:
-      Bit1 - ID of the frame
-      Bit2-Bit10 - payload
-      Bit11 - CRC counter used for verification/authenticity of the frame.
-      Bit-rate - up to 1 Mbit/s 
+   A datastructure exchange shall be defined. The data shall be exchanged as one-directional from IF1. The data shall be sent as packages from the application software. Each package is visualized as following:
+   
+   ![alt text](https://raw.githubusercontent.com/VisteonSofia/practice2/ttsvetk1/ArchSw.jpg)
+  
+   (1) ID of the frame
+   (2) payload
+   (3) Message Counter
+   (4) CRC (Cyclic Redundancy Check)- An error-detecting code to detect accidental changes to raw data 
     
-  2.2.1.1 IF1 and IF2 abstraction mechanism
-      
-  2.2.2 Watchdog mechanism
+   2.2.2 Watchdog mechanism
          
-  A watchdog timer (COP timer) shall be defined. The watchdog timer shall be used to prevent from elapsing or "timing out". If, due to a hardware fault or program error, the cluster fails to reset the watchdog, the timer will elapse and generate a timeout signal. The timeout signal is used to initiate corrective action or actions. The corrective actions typically include placing the system in a safe state and restoring normal system operation. The watchdog and CPU may share a common clock signal, or they may have independent clock signals.
+   A watchdog timer (COP timer) shall be defined. The watchdog timer shall be used to prevent from elapsing or "timing out". If, due to    a hardware fault or program error, the cluster fails to reset the watchdog, the timer will elapse and generate a timeout signal. The    timeout signal is used to initiate corrective action or actions. The corrective actions typically include placing the system in a        safe state and restoring normal system operation. The watchdog and CPU may share a common clock signal, or they may have independent    clock signals.
      
-  2.2.3 EEPROM structure (Diagnostics)
+   2.2.3 EEPROM structure (Diagnostics)
    
    
-  2.2.4 SNA behaviour
+   2.2.4 SNA behaviour
    
    
 
