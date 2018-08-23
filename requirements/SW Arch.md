@@ -27,7 +27,7 @@ called the application layer and one for the graphic interface, called the HMI. 
     
    A datastructure exchange shall be defined. The data shall be exchanged as one-directional from IF1. The data shall be sent as packages from the application software. Each package is visualized as following:
    
-   ![alt text](https://raw.githubusercontent.com/VisteonSofia/practice2/ttsvetk1/ArchSw.jpg)
+   ![alt text](https://raw.githubusercontent.com/VisteonSofia/practice2/ttsvetk1/frame.jpg)
   
    (1) ID of the frame
    (2) payload
