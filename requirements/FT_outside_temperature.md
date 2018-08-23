@@ -58,3 +58,7 @@ AT8: 	The HMI shall display the corresponding temp unit symbol [C/F],, based on 
 AT9: 	The degrees symbol “ ° ” shall be static and  shall alway  be displayed with the Ampent Temperature screen composition. 
 
 AT10: In case of [Fct_to_HIM_ Amb_Temp == Error], the HMI shall display dashes for the temperature, followed by the currently selected temperature unit: [- - -.-]° [C/F].
+
+
+State chart:
+ practice2/requirements/outside_temp_draft_visio_statemachine.jpg 
