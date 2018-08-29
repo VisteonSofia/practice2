@@ -51,11 +51,10 @@ AT5: 	The Fct_to_HIM_ Amb_Temp interface shall be received in celsius and shall 
 AT6:	If [NVM_Temp_Unit== Celsius], the HMI shall display the recived value of Fct_to_HIM_ Amb_Temp with no convertion.
 
 AT7: 	If [NVM_Temp_Unit== Fahrenheit], the HMI shall use the following formula for Fct_to_HIM_ Amb_Temp convertion: T(°F) = T(°C) × 9/5 + 32.
-AT8: The converted value Fct_to_HIM_ Amb_Temp shal
 
-AT8: 	The HMI shall display the corresponding temp unit symbol [C/F],, based on the configuration NVM parameter NVM_Temp_Unit.
+AT8: 	The HMI shall display the corresponding temp unit symbol [C/F], based on the configuration NVM parameter NVM_Temp_Unit.
 
-AT9: 	The degrees symbol “ ° ” shall be static and  shall alway  be displayed with the Ampent Temperature screen composition. 
+AT9: 	The degrees symbol “ ° ” shall be static and  shall alway be displayed with the Ampent Temperature screen composition. 
 
 AT10: In case of [Fct_to_HIM_ Amb_Temp == Error], the HMI shall display dashes for the temperature, followed by the currently selected temperature unit: [- - -.-]° [C/F].
 
