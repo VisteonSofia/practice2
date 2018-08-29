@@ -32,7 +32,7 @@ The Practice2 device shall display the ambient temperature, received from an int
 
 Int_to_Fct_Amb_Temp [TBD- additional synch with Martin, for the external device data format]
 
-Valid values range: 0 .. 1998 (Phys. Range:  -55°C .. +144.8°C)
+Valid values range: 0 .. 1998 (Phys. Range:  -55°C .. +125°C)
 Increment factor:  0.1°C
 Not valid values:
   Ndef values: 1999 .. 65534
