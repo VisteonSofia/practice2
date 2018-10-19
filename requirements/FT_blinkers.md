@@ -1,17 +1,19 @@
-## H2 Blinkers feature
+## Blinkers feature
 
-Brief description
+#### Brief description
 The feature manages the blinker activation/deactivation and signals HMI / acoustics functions for visual / acoustic notification of the user.
 
-Inputs
+#### Inputs
 _int_left_blinker_btn_press_  (bool, 0 means not pressed, 1 means pressed)
 _int_right_blinker_btn_press_ (bool, 0 means not pressed, 1 means pressed)
 
-Outputs
+
+#### Outputs
 _HMI_left_blinker_state_ (bool, IF1 relevant, 0 means blinker not shown, 1 means show blinker)
 _HMI_right_blinker_state_ (bool, IF1 relevant, 0 means blinker not shown, 1 means show blinker)
 
-Parameters
+
+#### Parameters
 _Blinkers_accoustics_priority_ (default = low (0), max = 10, non diag accessible)
 _Blinkers_accoustics_on_duration_ (default = 50ms, non diag accessible)
 _Blinkers_accoustics_off_duration_ (default = 50ms, non diag accessible)
@@ -20,6 +22,8 @@ _Blinkers_accoustics_off_duration_ (default = 1.4Khz, non diag accessible)
 _Blinkers_on_duration_ (default = 600ms, non diag accessible)
 _Blinkers_off_duration_ (default = 400ms, non diag accessible)
 
+
+#### Functional behaviour
 * R1 The feature will run every 50ms
 * R2 The feature controls two separate blinkers - left and right
 * R3 The blinkers are activated with dedicated hardware buttons. If the respective blinker is OFF, the button activates it, if the respective blinker is BLINKING when the respective blinker button is pressed - it is deactivated
