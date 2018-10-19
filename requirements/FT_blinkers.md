@@ -1,24 +1,24 @@
-Blinkers feature
+## H2 Blinkers feature
 
 Brief description
 The feature manages the blinker activation/deactivation and signals HMI / acoustics functions for visual / acoustic notification of the user.
 
 Inputs
-int_left_blinker_btn_press  (bool, 0 means not pressed, 1 means pressed)
-int_right_blinker_btn_press (bool, 0 means not pressed, 1 means pressed)
+_int_left_blinker_btn_press_  (bool, 0 means not pressed, 1 means pressed)
+_int_right_blinker_btn_press_ (bool, 0 means not pressed, 1 means pressed)
 
 Outputs
-HMI_left_blinker_state (bool, IF1 relevant, 0 means blinker not shown, 1 means show blinker)
-HMI_right_blinker_state (bool, IF1 relevant, 0 means blinker not shown, 1 means show blinker)
+_HMI_left_blinker_state_ (bool, IF1 relevant, 0 means blinker not shown, 1 means show blinker)
+_HMI_right_blinker_state_ (bool, IF1 relevant, 0 means blinker not shown, 1 means show blinker)
 
 Parameters
-Blinkers_accoustics_priority (default = low (0), max = 10, non diag accessible)
-Blinkers_accoustics_on_duration (default = 50ms, non diag accessible)
-Blinkers_accoustics_off_duration (default = 50ms, non diag accessible)
-Blinkers_accoustics_on_freq (default = 2KHz, non diag accessible)
-Blinkers_accoustics_off_duration (default = 1.4Khz, non diag accessible)
-Blinkers_on_duration (default = 600ms, non diag accessible)
-Blinkers_off_duration (default = 400ms, non diag accessible)
+_Blinkers_accoustics_priority_ (default = low (0), max = 10, non diag accessible)
+_Blinkers_accoustics_on_duration_ (default = 50ms, non diag accessible)
+_Blinkers_accoustics_off_duration_ (default = 50ms, non diag accessible)
+_Blinkers_accoustics_on_freq_ (default = 2KHz, non diag accessible)
+_Blinkers_accoustics_off_duration_ (default = 1.4Khz, non diag accessible)
+_Blinkers_on_duration_ (default = 600ms, non diag accessible)
+_Blinkers_off_duration_ (default = 400ms, non diag accessible)
 
 * R1 The feature will run every 50ms
 * R2 The feature controls two separate blinkers - left and right
@@ -29,4 +29,7 @@ Blinkers_off_duration (default = 400ms, non diag accessible)
 * R7 Blink cycle shall not be interrupted
 * R8 Blink cycles are 600ms on and 400ms off, customiseable via parameters Blinkers_on_duration and Blinkers_off_duration
 * R9 Fail behaviour: HMI shall set both blinkers to constantly lit upon TMO/SNA conditions of the HMI_left_blinker_state/HMI_right_blinker_state signals
+
+
+![alt text](https://github.com/VisteonSofia/practice2/raw/master/requirements/img/blinkers_state_machine.PNG "Blinkers")
 
