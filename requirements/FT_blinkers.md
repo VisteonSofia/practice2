@@ -5,21 +5,29 @@ The feature manages the blinker activation/deactivation and signals HMI / acoust
 
 #### Inputs
 _int_left_blinker_btn_press_  (bool, 0 means not pressed, 1 means pressed)
+
 _int_right_blinker_btn_press_ (bool, 0 means not pressed, 1 means pressed)
 
 
 #### Outputs
 _HMI_left_blinker_state_ (bool, IF1 relevant, 0 means blinker not shown, 1 means show blinker)
+
 _HMI_right_blinker_state_ (bool, IF1 relevant, 0 means blinker not shown, 1 means show blinker)
 
 
 #### Parameters
 _Blinkers_accoustics_priority_ (default = low (0), max = 10, non diag accessible)
+
 _Blinkers_accoustics_on_duration_ (default = 50ms, non diag accessible)
+
 _Blinkers_accoustics_off_duration_ (default = 50ms, non diag accessible)
+
 _Blinkers_accoustics_on_freq_ (default = 2KHz, non diag accessible)
+
 _Blinkers_accoustics_off_duration_ (default = 1.4Khz, non diag accessible)
+
 _Blinkers_on_duration_ (default = 600ms, non diag accessible)
+
 _Blinkers_off_duration_ (default = 400ms, non diag accessible)
 
 
