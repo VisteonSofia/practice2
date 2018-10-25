@@ -24,8 +24,6 @@ _Blinkers_accoustics_off_duration_ (default = 50ms, non diag accessible)
 
 _Blinkers_accoustics_on_freq_ (default = 2KHz, non diag accessible)
 
-_Blinkers_accoustics_off_duration_ (default = 1.4Khz, non diag accessible)
-
 _Blinkers_on_duration_ (default = 600ms, non diag accessible)
 
 _Blinkers_off_duration_ (default = 400ms, non diag accessible)
