@@ -57,7 +57,7 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
 
 #### Peer Review Comments
 * PRC1 regarding R1:"The feature will run every 50ms" >>> Run does not defined expected action.
-* PRC2 regarding R8:"Blink cycles are 600ms on and 400ms off, customiseable via parameters Blinkers_on_duration and Blinkers_off_duration" >>> Parameters set/change are not defined.
+* PRC2 regarding R8:"Blink cycles are 600ms on and 400ms off, customiseable via parameters Blinkers_on_duration and Blinkers_off_duration" >>> Blinkers_on_duration and Blinkers_off_duration are parameters instead of contants but set/change are not defined.
 * PRC3 regarding R9:"HMI shall set both blinkers to constantly lit upon TMO/SNA conditions of the HMI_left_blinker_state/HMI_right_blinker_state/_HMI_hazzards_state_ signals" >>> Sound behavior is not defined
 
 #### Skill Review comments
