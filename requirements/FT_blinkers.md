@@ -8,11 +8,15 @@ _int_left_blinker_btn_press_  (bool, 0 means not pressed, 1 means pressed)
 
 _int_right_blinker_btn_press_ (bool, 0 means not pressed, 1 means pressed)
 
+_int_hazzard_btn_press_       (bool, 0 means not pressed, 1 means pressed)
+
 
 #### Outputs
-_HMI_left_blinker_state_ (bool, IF1 relevant, 0 means blinker not shown, 1 means show blinker)
+_HMI_left_blinker_state_  (bool, IF1 relevant, 0 means blinker not shown, 1 means show blinker)
 
 _HMI_right_blinker_state_ (bool, IF1 relevant, 0 means blinker not shown, 1 means show blinker)
+
+_HMI_hazzards_state_ (bool, IF1 relevant, 0 means hazzards off, 1 means hazzards on)
 
 
 #### Parameters
@@ -38,7 +42,26 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
 * R6 The blinkers cannot be activated at the same time, except in "hazard notification mode"
 * R7 Blink cycle shall not be interrupted
 * R8 Blink cycles are 600ms on and 400ms off, customiseable via parameters Blinkers_on_duration and Blinkers_off_duration
-* R9 Fail behaviour: HMI shall set both blinkers to constantly lit upon TMO/SNA conditions of the HMI_left_blinker_state/HMI_right_blinker_state signals
+* R9 Fail behaviour: HMI shall set both blinkers to constantly lit upon TMO/SNA conditions of the HMI_left_blinker_state/HMI_right_blinker_state/_HMI_hazzards_state_ signals
+
+#### User cases
+* UC1 When left button is pressed and hazzards are OFF Then activate the left blinker after end of current blinking cycle.
+* UC2 When left button is pressed and right blinker is ON Then activate the left blinker after end of current blinking cycle.
+* UC3 When left button is pressed and left blinker is ON Then deactivate the left blinker after end of current blinking cycle.
+* UC4 When a button is double pressed withing 50 ms Then one press shall be triggered.
+* UC5 When a blinker button and hazzards button is pressed withing 50 ms Then hazzards takes priority.
+* UC6 When multiple blinker buttons are pressed withing 50 ms Then last one takes priority.
+* UC7 When hazzards button is pressed and hazzards are OFF Then activate the hazzards after end of current blinking cycle.
+* UC8 When hazzards button is pressed and hazzards are ON Then deactivate the hazzards after end of current blinking cycle.
+* UC9 When blinker is ON Then it shall play a sound until light is deactivated.
+
+#### Peer Review Comments
+* PRC1 regarding R1:"The feature will run every 50ms" >>> Run does not defined expected action.
+* PRC2 regarding R8:"Blink cycles are 600ms on and 400ms off, customiseable via parameters Blinkers_on_duration and Blinkers_off_duration" >>> Parameters set/change are not defined.
+* PRC3 regarding R9:"HMI shall set both blinkers to constantly lit upon TMO/SNA conditions of the HMI_left_blinker_state/HMI_right_blinker_state/_HMI_hazzards_state_ signals" >>> Sound behavior is not defined
+
+#### Skill Review comments
+
 
 
 ![alt text](https://github.com/VisteonSofia/practice2/raw/master/requirements/img/blinkers_state_machine.PNG "Blinkers")
