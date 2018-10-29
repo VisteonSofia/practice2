@@ -61,8 +61,9 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
 * PRC3 regarding R9:"HMI shall set both blinkers to constantly lit upon TMO/SNA conditions of the HMI_left_blinker_state/HMI_right_blinker_state/_HMI_hazzards_state_ signals" >>> Sound behavior is not defined
 
 #### Skill Review comments
+not available
 
-
+#### State diagram
 
 ![alt text](https://github.com/VisteonSofia/practice2/raw/master/requirements/img/blinkers_state_machine.PNG "Blinkers")
 
