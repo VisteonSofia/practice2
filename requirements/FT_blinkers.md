@@ -56,7 +56,14 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
 #### Peer Review Comments
 * PRC1 regarding R1:"The feature will run every 50ms" >>> Run does not defined expected action.
 * PRC2 regarding R8:"Blink cycles are 600ms on and 400ms off, customiseable via parameters Blinkers_on_duration and Blinkers_off_duration" >>> Blinkers_on_duration and Blinkers_off_duration are parameters instead of contants but set/change are not defined.
-* PRC3 regarding R9:"HMI shall set both blinkers to constantly lit upon TMO/SNA conditions of the HMI_left_blinker_state/HMI_right_blinker_state/_HMI_hazzards_state_ signals" >>> Sound behavior is not defined
+* PRC3 regarding R9:"HMI shall set both blinkers to constantly lit upon TMO/SNA conditions of the HMI_left_blinker_state/HMI_right_blinker_state" >>> Sound behavior is not defined
+
+#### Req. Clarification Proposal
+* RCP1 regarding R1:"The feature will run every 50ms" >>> The feature shall provide update on the outputs HMI_left_blinker_state/HMI_right_blinker_state every 50 ms
+* RCP2 regarding R9:"HMI shall set both blinkers to constantly lit upon TMO/SNA conditions of the HMI_left_blinker_state/HMI_right_blinker_state" >>> HMI shall set both blinkers and sound to constantly lit upon TMO/SNA conditions of the HMI_left_blinker_state/HMI_right_blinker_state
+* RCP3 - RCP10 proposal: Wait 50 ms and provide an update on outputs in the end of current 50ms frame.
+* RCP4 - RCP11 proposal: When a button is double pressed withing 50 ms Then one press shall be triggered.
+* RCP5 - RCP12 proposal: Hazzards button has priority over blinking events.
 
 #### Skill Review comments
 not available
