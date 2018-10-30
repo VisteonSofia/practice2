@@ -16,8 +16,6 @@ _HMI_left_blinker_state_  (bool, IF1 relevant, 0 means blinker not shown, 1 mean
 
 _HMI_right_blinker_state_ (bool, IF1 relevant, 0 means blinker not shown, 1 means show blinker)
 
-_HMI_hazzards_state_ (bool, IF1 relevant, 0 means hazzards off, 1 means hazzards on)
-
 
 #### Parameters
 _Blinkers_accoustics_priority_ (default = low (0), max = 10, non diag accessible)
@@ -42,7 +40,7 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
 * R6 The blinkers cannot be activated at the same time, except in "hazard notification mode"
 * R7 Blink cycle shall not be interrupted
 * R8 Blink cycles are 600ms on and 400ms off, customiseable via parameters Blinkers_on_duration and Blinkers_off_duration
-* R9 Fail behaviour: HMI shall set both blinkers to constantly lit upon TMO/SNA conditions of the HMI_left_blinker_state/HMI_right_blinker_state/_HMI_hazzards_state_ signals
+* R9 Fail behaviour: HMI shall set both blinkers to constantly lit upon TMO/SNA conditions of the HMI_left_blinker_state/HMI_right_blinker_state
 
 #### User cases
 * UC1 When left button is pressed and hazzards are OFF Then activate the left blinker after end of current blinking cycle.
