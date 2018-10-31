@@ -43,7 +43,7 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
 * R9 Fail behaviour: HMI shall set both blinkers to constantly lit upon TMO/SNA conditions of the HMI_left_blinker_state/HMI_right_blinker_state
 
 #### User cases
-* UC1 When left button is pressed and hazzards are OFF Then activate the left blinker after end of current blinking cycle.
+* UC1 When left button is pressed and hazzards are OFF Then activate the left blinker.
 * UC2 When left button is pressed and right blinker is ON Then activate the left blinker after end of current blinking cycle.
 * UC3 When left button is pressed and left blinker is ON Then deactivate the left blinker after end of current blinking cycle.
 * UC4 When a button is double pressed withing 50 ms Then one press shall be triggered.
@@ -64,6 +64,44 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
 * RCP3 - RCP10 proposal: Wait 50 ms and provide an update on outputs in the end of current 50ms frame.
 * RCP4 - RCP11 proposal: When a button is double pressed withing 50 ms Then one press shall be triggered.
 * RCP5 - RCP12 proposal: Hazzards button has priority over blinking events.
+
+#### Test Cases
+* TC1 - normal behavior
+  1. Check blinkers OFF at 0.1s
+  2. Press/release left button at 0.2/0.3
+  3. Check active 2 active phase of blinker
+  4. Press/release left button at 1.5/0.6
+  EB:
+  1. _HMI_left_blinker_state_ active [0.25,0.85) U [1.25,1.85)
+  2. _HMI_left_blinker_state_ deactiveted [0,0.25) U [0.85,1.25) U [1.85,3]
+  
+* TC2 - long press
+  1. Check blinkers OFF at 3.1s
+  2. Press/release left button at 3.2/4.3
+  3. Check active 2 active phase of blinker
+  4. Press/release left button at 4.31/4.315
+  EB:
+  1. _HMI_left_blinker_state_ active [3.25,3.85) U [4.25,4.85)
+  2. _HMI_left_blinker_state_ deactiveted [3,3.25) U [3.85,4.25) U [4.85,6]
+ 
+ * TC3 - deactivation at last ms
+  1. Check blinkers OFF at 6.1s
+  2. Press/release left button at 6.2/6.3
+  3. Check active 1 active phase of blinker
+  4. Press/release left button at 7.199/7.3
+  EB:
+  1. _HMI_left_blinker_state_ active [6.25,6.85)
+  2. _HMI_left_blinker_state_ deactiveted [6,6.25) U [6.85,8]
+  
+  * TC3 - late deactivation, wait one more cycle
+  1. Check blinkers OFF at 8.1s
+  2. Press/release left button at 8.2/8.3
+  3. Check active 2 active phase of blinker
+  4. Press/release left button at 9.251/9.3
+  EB:
+  1. _HMI_left_blinker_state_ active [9.25,9.85) U [10.25,10.85)
+  2. _HMI_left_blinker_state_ deactiveted [9,9.25) U [9.85,10.25)
+
 
 #### Skill Review comments
 not available
