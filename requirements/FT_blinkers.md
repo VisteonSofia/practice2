@@ -69,38 +69,59 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
 * TC1 - normal behavior
   1. Check blinkers OFF at 0.1s
   2. Press/release left button at 0.2/0.3
-  3. Check active 2 active phase of blinker
+  3. Check active 2 active phases of left blinker
   4. Press/release left button at 1.5/0.6
   EB:
-  1. _HMI_left_blinker_state_ active [0.25,0.85) U [1.25,1.85)
+  1. _HMI_left_blinker_state_ active (0.25,0.85) U (1.25,1.85)
   2. _HMI_left_blinker_state_ deactiveted [0,0.25) U [0.85,1.25) U [1.85,3]
   
 * TC2 - long press
   1. Check blinkers OFF at 3.1s
   2. Press/release left button at 3.2/4.3
-  3. Check active 2 active phase of blinker
+  3. Check active 2 active phases of left blinker
   4. Press/release left button at 4.31/4.315
   EB:
-  1. _HMI_left_blinker_state_ active [3.25,3.85) U [4.25,4.85)
-  2. _HMI_left_blinker_state_ deactiveted [3,3.25) U [3.85,4.25) U [4.85,6]
+  1. _HMI_left_blinker_state_ active (3.25,3.85) U (4.25,4.85)
+  2. _HMI_left_blinker_state_ deactiveted [3,3.25) U (3.85,4.25) U (4.85,6]
  
  * TC3 - deactivation at last ms
   1. Check blinkers OFF at 6.1s
   2. Press/release left button at 6.2/6.3
-  3. Check active 1 active phase of blinker
+  3. Check active 1 active phase of left blinker
   4. Press/release left button at 7.199/7.3
   EB:
-  1. _HMI_left_blinker_state_ active [6.25,6.85)
-  2. _HMI_left_blinker_state_ deactiveted [6,6.25) U [6.85,8]
+  1. _HMI_left_blinker_state_ active (6.25,6.85)
+  2. _HMI_left_blinker_state_ deactiveted [6,6.25) U (6.85,8]
   
-  * TC3 - late deactivation, wait one more cycle
+  * TC4 - late deactivation, wait one more cycle
   1. Check blinkers OFF at 8.1s
   2. Press/release left button at 8.2/8.3
-  3. Check active 2 active phase of blinker
+  3. Check active 2 active phases of left blinker
+  4. Press/release left button at 9.251/9.3
+  EB:
+  1. _HMI_left_blinker_state_ active (9.25,9.85) U (10.25,10.85)
+  2. _HMI_left_blinker_state_ deactiveted [9,9.25) U (9.85,10.25) U (10.85,11]
+  
+  * TC5 - switch at last ms
+  1. Check blinkers OFF at 11.1s
+  2. Press/release left button at 11.2/11.3
+  3. Check active 1 active phase of left blinker
+  4. Press/release right button at 12.199/12.3
+  5. Check active 2 active phases of right blinker
+  EB:
+  1. _HMI_left_blinker_state_ active (11.25,11.85)
+  2. _HMI_left_blinker_state_ deactiveted [11,11.25) U (11.85,15]
+  3. _HMI_right_blinker_state_ active (12.249,12.849) U (13.249,13.849)
+  4. _HMI_right_blinker_state_ deactiveted [11,12.249) U (12.849,13.249) U (13.849,15]
+  
+  * TC6 - late deactivation, wait one more cycle
+  1. Check blinkers OFF at 8.1s
+  2. Press/release left button at 8.2/8.3
+  3. Check active 2 active phases of blinker
   4. Press/release left button at 9.251/9.3
   EB:
   1. _HMI_left_blinker_state_ active [9.25,9.85) U [10.25,10.85)
-  2. _HMI_left_blinker_state_ deactiveted [9,9.25) U [9.85,10.25)
+  2. _HMI_left_blinker_state_ deactiveted [9,9.25) U [9.85,10.25) U [10.85,11]
 
 
 #### Skill Review comments
