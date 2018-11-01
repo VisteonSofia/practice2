@@ -186,8 +186,8 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
   EB:
   1. _HMI_left_blinker_state_ active (28.25,28.85) U (29.25,29.85) U (30.25,30.85) U (31.25,31.85)
   2. _HMI_left_blinker_state_ deactiveted [28,28.25) U (28.85,29.25) U (29.85,30.25) U (30.85,31.25) U (31.85,33]
-  3. _HMI_right_blinker_state_ active (29.25,29.85) U (30.25,30.85)
-  4. _HMI_right_blinker_state_ deactiveted [28,29.25) U (29.85,30.25) U (30.85,33]
+  3. _HMI_right_blinker_state_ active (29.25,29.85) U (30.25,30.85) U (31.25,31.85)
+  4. _HMI_right_blinker_state_ deactiveted [28,29.25) U (29.85,30.25) U (30.85,31.25) U (31.85,33]
 
 
 #### Skill Review comments
