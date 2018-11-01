@@ -47,12 +47,12 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
 * UC2 When left button is pressed and right blinker is ON Then activate the left blinker after end of current blinking cycle.
 * UC3 When left button is pressed and left blinker is ON Then deactivate the left blinker after end of current blinking cycle.
 * UC4 When a button is double pressed withing 50 ms Then one press shall be triggered.
-* UC5 When a blinker button and hazzards button is pressed withing 50 ms Then hazzards takes priority.
+* UC5 When a blinker button and hazzards button are pressed withing 50 ms Then hazzards takes priority.
 * UC6 When multiple blinker buttons are pressed withing 50 ms Then last one takes priority.
 * UC7 When hazzards button is pressed and hazzards are OFF Then activate the hazzards after end of current blinking cycle.
 * UC8 When hazzards button is pressed and hazzards are ON Then deactivate the hazzards after end of current blinking cycle.
 * UC9 When blinker is ON Then it shall play a sound until light is deactivated.
-* UC9 When blinker is ON Then it shall play a sound until light is deactivated.
+* UC10 When hazzards are ON and press a blinker button Then hazzards shall remain active.
 
 #### Peer Review Comments
 * PRC1 regarding R1:"The feature will run every 50ms" >>> Run does not defined expected action.
@@ -151,6 +151,43 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
   EB:
   1. _HMI_right_blinker_state_ active (22.275,22.875)
   2. _HMI_right_blinker_state_ deactiveted [22,22.275) U (22.875,24]
+  
+   * TC9 - hazzards priority
+  1. Check blinkers OFF at 24.1s
+  2. Press/release hazzards button at 24.2/24.21
+  3. Press/release right button at 24.225/24.3
+  4. Check 1 active phases of hazzards
+  5. Press/release hazzards button at 25.1/25.3
+  EB:
+  1. _HMI_left_blinker_state_ active (24.25,24.85)
+  2. _HMI_left_blinker_state_ deactiveted [24,24.25) U (24.85,26]
+  3. _HMI_right_blinker_state_ active (24.25,24.85)
+  4. _HMI_right_blinker_state_ deactiveted [24,24.25) U (24.85,26]
+  
+  * TC10 - last one priority
+  1. Check blinkers OFF at 26.1s
+  2. Press/release left button at 26.2/26.21
+  3. Press/release right button at 26.225/26.3
+  4. Check 1 active phases of right blinker
+  5. Press/release right button at 27.1/27.3
+  EB:
+  1. _HMI_right_blinker_state_ active (26.275,26.875)
+  2. _HMI_right_blinker_state_ deactiveted [26,26.275) U (26.875,28]
+
+* TC11 - Hazzards normal operation
+  1. Check blinkers OFF at 28.1s
+  2. Press/release left button at 28.2/28.3
+  3. Check 1 active phases of left blinker
+  4. Press/release hazzards button at 28.5/28.6
+  5. Check 1 active phases of hazzards
+  6. Press/release left button at 29.5/29.6
+  7. Check 2 active phases of hazzards
+  8. Press/release hazzards button at 31.5/31.6
+  EB:
+  1. _HMI_left_blinker_state_ active (28.25,28.85) U (29.25,29.85) U (30.25,30.85) U (31.25,31.85)
+  2. _HMI_left_blinker_state_ deactiveted [28,28.25) U (28.85,29.25) U (29.85,30.25) U (30.85,31.25) U (31.85,33]
+  3. _HMI_right_blinker_state_ active (29.25,29.85) U (30.25,30.85)
+  4. _HMI_right_blinker_state_ deactiveted [28,29.25) U (29.85,30.25) U (30.85,33]
 
 
 #### Skill Review comments
