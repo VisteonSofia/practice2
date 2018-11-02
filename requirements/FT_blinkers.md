@@ -53,6 +53,7 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
 * UC8 When hazzards button is pressed and hazzards are ON Then deactivate the hazzards after end of current blinking cycle.
 * UC9 When blinker is ON Then it shall play a sound until light is deactivated.
 * UC10 When hazzards are ON and press a blinker button Then hazzards shall remain active.
+* UC11 When both blinkers buttons are pressed in same time Then no action shall be triggered.
 
 #### Peer Review Comments
 * PRC1 regarding R1:"The feature will run every 50ms" >>> Run does not defined expected action.
@@ -188,6 +189,16 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
   2. _HMI_left_blinker_state_ deactiveted [28,28.25) U (28.85,29.25) U (29.85,30.25) U (30.85,31.25) U (31.85,33]
   3. _HMI_right_blinker_state_ active (29.25,29.85) U (30.25,30.85) U (31.25,31.85)
   4. _HMI_right_blinker_state_ deactiveted [28,29.25) U (29.85,30.25) U (30.85,31.25) U (31.85,33]
+  
+ * TC12 - Both blinkers at same time
+  1. Check blinkers OFF at 33.1s
+  2. Press/release left button at 33.2/33.3
+  3. Press/release right button at 33.2/33.3
+  4. Check 1 active phases of left blinker
+  5. Check blinkers OFF at 33.6s
+  EB:
+  1. _HMI_left_blinker_state_ deactiveted [33,35]
+  2. _HMI_right_blinker_state_ deactiveted [33,35]
 
 
 #### Skill Review comments
