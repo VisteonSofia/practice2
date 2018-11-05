@@ -28,7 +28,7 @@ void blinker_state_machine() {
 
 
   // both blinkers button are not pressed
-  if (bl_left_btn_press != PRESSED && bl_left_btn_prev_state == RELEASED && bl_right_btn_press != PRESSED && bl_right_btn_prev_state == RELEASED) {
+ if(!(bl_left_btn_press == PRESSED && bl_left_btn_prev_state == RELEASED&&bl_right_btn_press == PRESSED && bl_right_btn_prev_state == RELEASED)){
     // needs refacturing - do it once
     Serial.print("Left button state:"); Serial.print(bl_left_btn_press); Serial.print("  | Right button state:"); Serial.println(bl_right_btn_press);
     if (bl_left_btn_press == PRESSED && bl_left_btn_prev_state == RELEASED ) { // Button was pressed; TO-DO - debounce
@@ -90,7 +90,9 @@ void blinker_state_machine() {
   if (bl_hazzards_btn_press != PRESSED && bl_hazzards_btn_press != RELEASED) {
     be_eventVariable = BE_FAIL;
   }
-
+#ifdef BL_DEBUG
+    Serial.print("Time");Serial.print(bs_msCounts);Serial.print(" | Event");Serial.println(be_eventVariable);
+#endif BL_DEBUG
   if (bs_msCounts != BS_FEATURE_CYCLE_TIME || active_time > 0 || waiting_time > 0) { // If there are no events pending, or cycle time hasn't expired --> exit
     return;
   }
@@ -134,7 +136,9 @@ void blinker_state_machine() {
     default:
       break;
   }
-
+#ifdef BL_DEBUG
+    Serial.print("State");Serial.println(bs_stateVariable);
+#endif BL_DEBUG
 
   switch (bs_stateVariable) {
 
