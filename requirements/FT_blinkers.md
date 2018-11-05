@@ -199,6 +199,12 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
   EB:
   1. _HMI_left_blinker_state_ deactiveted [33,35]
   2. _HMI_right_blinker_state_ deactiveted [33,35]
+  
+  ToDo
+ * TC13 - Unknown hazzards button value
+  1. Check blinkers OFF at 35.1s
+  2. Set left button level equal to 0.5 at 35.2s
+  3. Set left button level equal to 1 at 35.3s
 
 
 #### Skill Review comments
