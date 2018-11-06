@@ -3,7 +3,7 @@
 #define BL_DEBUG 1
 
 #define BS_FEATURE_CYCLE_TIME 50
-#define BS_ACTIVE_TIME 600
+#define BS_ACTIVE_TIME 600 
 #define BS_WAITING_TIME 400
 
 
@@ -12,12 +12,14 @@
 void blinker_state_machine() {
 
   if (bs_prevMillis != millis()) {
-    bs_msCounts++;
+    
+    bs_msCounts+= (millis()-bs_prevMillis);
+    
     if (active_time > 0) {
-      active_time--;
+      active_time-=(millis()-bs_prevMillis);
     }
     if (waiting_time > 0) {
-      waiting_time--;
+      waiting_time-=(millis()-bs_prevMillis);
     }
     bs_prevMillis = millis();
   }
@@ -28,11 +30,11 @@ void blinker_state_machine() {
 
 
   // both blinkers button are not pressed
- if(!(bl_left_btn_press == PRESSED && bl_left_btn_prev_state == RELEASED&&bl_right_btn_press == PRESSED && bl_right_btn_prev_state == RELEASED)){
+ if(!(bl_left_btn_press == PRESSED && bl_left_btn_prev_state == RELEASED && bl_right_btn_press == PRESSED && bl_right_btn_prev_state == RELEASED)){
     // needs refacturing - do it once
-    Serial.print("Left button state:"); Serial.print(bl_left_btn_press); Serial.print("  | Right button state:"); Serial.println(bl_right_btn_press);
-    if (bl_left_btn_press == PRESSED && bl_left_btn_prev_state == RELEASED ) { // Button was pressed; TO-DO - debounce
 
+    if (bl_left_btn_press == PRESSED && bl_left_btn_prev_state == RELEASED ) { // Button was pressed; TO-DO - debounce
+    Serial.print("Left button state:"); Serial.print(bl_left_btn_press); Serial.print("  | Right button state:"); Serial.println(bl_right_btn_press);
 #ifdef BL_DEBUG
       Serial.println("Yay!!! left button pressed!!");
 #endif BL_DEBUG
@@ -63,7 +65,7 @@ void blinker_state_machine() {
       }
     }
     bl_right_btn_prev_state = bl_right_btn_press;
-  }
+  } // Rising front on both buttons?
 
   bl_hazzards_btn_press = digitalRead(buttonHazzards);
   if (bl_hazzards_btn_press == PRESSED && bl_hazzards_btn_prev_state == RELEASED ) { // Button was pressed; TO-DO - debounce
@@ -91,13 +93,13 @@ void blinker_state_machine() {
     be_eventVariable = BE_FAIL;
   }
 #ifdef BL_DEBUG
-    Serial.print("Time");Serial.print(bs_msCounts);Serial.print(" | Event");Serial.println(be_eventVariable);
+    Serial.print("Time");Serial.print(bs_msCounts);Serial.print(" | Event ");Serial.println(be_eventVariable);
+    Serial.print("bs_stateVariable");Serial.println(bs_stateVariable);
+    Serial.print("active_time");Serial.print(active_time);Serial.print(" | waiting_time ");Serial.println(waiting_time);
 #endif BL_DEBUG
-  if (bs_msCounts != BS_FEATURE_CYCLE_TIME || active_time > 0 || waiting_time > 0) { // If there are no events pending, or cycle time hasn't expired --> exit
+  if (bs_msCounts < BS_FEATURE_CYCLE_TIME || active_time > 0 || waiting_time > 0) { // If there are no events pending, or cycle time hasn't expired --> exit
     return;
   }
-
-
   switch (be_eventVariable) {
 
     case BE_NONE:
