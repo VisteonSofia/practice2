@@ -4,7 +4,7 @@
 
 #define BS_FEATURE_CYCLE_TIME 50
 #define BS_ACTIVE_TIME 600 
-#define BS_WAITING_TIME 400
+#define BS_WAITING_TIME 1000
 
 
 
@@ -100,7 +100,8 @@ void blinker_state_machine() {
   if (bs_msCounts < BS_FEATURE_CYCLE_TIME || active_time > 0) { // If there are no events pending, or cycle time hasn't expired --> exit
     return;
   }
-  if(waiting_time <= 0){
+  
+  if(waiting_time>0)
     switch (be_eventVariable) {
 
       case BE_NONE:
@@ -108,30 +109,15 @@ void blinker_state_machine() {
         break;
 
       case BE_LEFT_BTN_PRESS:
-        if (bs_stateVariable == BS_LEFT) {
-          bs_stateVariable = BS_WAIT;
-        }
-        else {
           bs_stateVariable = BS_LEFT;
-        }
         break;
 
       case BE_RIGHT_BTN_PRESS:
-        if (bs_stateVariable == BS_RIGHT) {
-          bs_stateVariable = BS_WAIT;
-        }
-        else {
           bs_stateVariable = BS_RIGHT;
-        }
-        break;
+      break;
 
       case BE_HAZZARDS_BTN_PRESS:
-        if (bs_stateVariable == BS_HAZZARDS) {
-          bs_stateVariable = BS_WAIT;
-        }
-        else {
           bs_stateVariable = BS_HAZZARDS;
-        }
         break;
       case BE_FAIL:
         bs_stateVariable = BS_FAIL;
@@ -139,7 +125,10 @@ void blinker_state_machine() {
       default:
         break;
     }
-  }
+}
+else{
+  bs_stateVariable=BS_WAIT;
+}
 #ifdef BL_DEBUG
     Serial.print("State");Serial.println(bs_stateVariable);
 #endif BL_DEBUG
@@ -170,24 +159,26 @@ void blinker_state_machine() {
       digitalWrite(leftBlinkerLED, HIGH);
       digitalWrite(rightBlinkerLED, LOW);
       active_time = BS_ACTIVE_TIME;
+      waiting_time = BS_WAITING_TIME;
       break;
 
     case BS_RIGHT:
       digitalWrite(leftBlinkerLED, LOW);
       digitalWrite(rightBlinkerLED, HIGH);
       active_time = BS_ACTIVE_TIME;
+      waiting_time = BS_WAITING_TIME;
       break;
 
     case BS_HAZZARDS:
       digitalWrite(leftBlinkerLED, HIGH);
       digitalWrite(rightBlinkerLED, HIGH);
       active_time = BS_ACTIVE_TIME;
+      waiting_time = BS_WAITING_TIME;
       break;
 
     case BS_WAIT:
       digitalWrite(leftBlinkerLED, LOW);
       digitalWrite(rightBlinkerLED, LOW);
-      waiting_time = BS_WAITING_TIME;
       break;
 
     case BS_FAIL:
