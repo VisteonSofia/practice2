@@ -97,46 +97,48 @@ void blinker_state_machine() {
     Serial.print("bs_stateVariable");Serial.println(bs_stateVariable);
     Serial.print("active_time");Serial.print(active_time);Serial.print(" | waiting_time ");Serial.println(waiting_time);
 #endif BL_DEBUG
-  if (bs_msCounts < BS_FEATURE_CYCLE_TIME || active_time > 0 || waiting_time > 0) { // If there are no events pending, or cycle time hasn't expired --> exit
+  if (bs_msCounts < BS_FEATURE_CYCLE_TIME || active_time > 0) { // If there are no events pending, or cycle time hasn't expired --> exit
     return;
   }
-  switch (be_eventVariable) {
+  if(waiting_time <= 0){
+    switch (be_eventVariable) {
 
-    case BE_NONE:
-      bs_stateVariable == BS_IDLE;
-      break;
+      case BE_NONE:
+        bs_stateVariable == BS_IDLE;
+        break;
 
-    case BE_LEFT_BTN_PRESS:
-      if (bs_stateVariable == BS_LEFT) {
-        bs_stateVariable = BS_WAIT;
-      }
-      else {
-        bs_stateVariable = BS_LEFT;
-      }
-      break;
+      case BE_LEFT_BTN_PRESS:
+        if (bs_stateVariable == BS_LEFT) {
+          bs_stateVariable = BS_WAIT;
+        }
+        else {
+          bs_stateVariable = BS_LEFT;
+        }
+        break;
 
-    case BE_RIGHT_BTN_PRESS:
-      if (bs_stateVariable == BS_RIGHT) {
-        bs_stateVariable = BS_WAIT;
-      }
-      else {
-        bs_stateVariable = BS_RIGHT;
-      }
-      break;
+      case BE_RIGHT_BTN_PRESS:
+        if (bs_stateVariable == BS_RIGHT) {
+          bs_stateVariable = BS_WAIT;
+        }
+        else {
+          bs_stateVariable = BS_RIGHT;
+        }
+        break;
 
-    case BE_HAZZARDS_BTN_PRESS:
-      if (bs_stateVariable == BS_HAZZARDS) {
-        bs_stateVariable = BS_WAIT;
-      }
-      else {
-        bs_stateVariable = BS_HAZZARDS;
-      }
-      break;
-    case BE_FAIL:
-      bs_stateVariable = BS_FAIL;
-      break;
-    default:
-      break;
+      case BE_HAZZARDS_BTN_PRESS:
+        if (bs_stateVariable == BS_HAZZARDS) {
+          bs_stateVariable = BS_WAIT;
+        }
+        else {
+          bs_stateVariable = BS_HAZZARDS;
+        }
+        break;
+      case BE_FAIL:
+        bs_stateVariable = BS_FAIL;
+        break;
+      default:
+        break;
+    }
   }
 #ifdef BL_DEBUG
     Serial.print("State");Serial.println(bs_stateVariable);
