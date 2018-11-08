@@ -32,7 +32,7 @@ _Blinkers_off_duration_ (default = 400ms, non diag accessible)
 
 
 #### Functional behaviour
-* R1 The feature will run every 50ms
+* R1 The feature update time is 50ms
 * R2 The feature controls two separate blinkers - left and right
 * R3 The blinkers are activated with dedicated hardware buttons. If the respective blinker is OFF, the button activates it, if the respective blinker is BLINKING when the respective blinker button is pressed - it is deactivated
 * R4 "Hazzard notification"function shall be available, if time permits. The function activates both blinkers at the same time.
