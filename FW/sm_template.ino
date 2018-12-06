@@ -11,7 +11,7 @@ uint32_t sd_prevMillis=0;
 
 void spvl_state_machine() {
  if(sd_prevMillis!=millis()) {
-  sd_msCounts++;
+  sd_msCounts+=millis()-sd_prevMillis;
   sd_prevMillis=millis();
  }
 
