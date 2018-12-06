@@ -58,7 +58,7 @@ void setup() {
   digitalWrite(LED_PIN, HIGH);
 
   tft.initR(INITR_BLACKTAB);   // initialize a ST7735S chip, black tab
-  tft.setRotation(3);
+  tft.setRotation(1);
   tft.fillScreen(ST77XX_BLACK);
   delay(100);
 }
