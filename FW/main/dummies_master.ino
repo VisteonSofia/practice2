@@ -1,9 +1,9 @@
 #define IPC
 #define BLINKERS
 
-#define buttonLeft  5  // Pin for left blink button
-#define buttonRight 6 // Pin for right blink button
-#define buttonHazzards 7 // Pin for Hazzards blink button
+#define buttonLeft  6  // Pin for left blink button
+#define buttonRight 5 // Pin for right blink button
+#define buttonHazzards 3 // Pin for Hazzards blink button
 
 #define PRESSED 0
 #define RELEASED 1
