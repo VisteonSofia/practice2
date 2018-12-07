@@ -1,0 +1,50 @@
+
+#define POT_PIN A0
+
+#define SD_DEBUG
+#define SD_IDLE_TIME 300 //0,3sec
+#define POT_PIN A0
+
+
+enum sd_state {SD_INIT, SD_IDLE, SD_READING } sd_stateVariable;
+uint32_t sd_msCounts=0;
+uint32_t sd_prevMillis=0;
+
+void speedo_state_machine() {
+ if(sd_prevMillis!=millis()) {
+  sd_msCounts+=millis()-sd_prevMillis;
+  sd_prevMillis=millis();
+ }
+
+switch (sd_stateVariable){
+  
+  case SD_INIT:
+     PDU1_storage.DispSpeed= 0;
+     sd_stateVariable = SD_IDLE;
+          sd_msCounts=0;
+  break;
+
+  case SD_IDLE:
+    if(sd_msCounts >= SD_IDLE_TIME)
+    {
+      sd_stateVariable = SD_READING;
+            sd_msCounts = 0;
+    }
+    
+     break; 
+
+    case SD_READING:
+      PDU1_storage.DispSpeed= map(analogRead(POT_PIN), 0, 1023, 0, storage.mvs_spd_max_speed);
+      PDU1_storage.UnitSpeed= storage.mvs_spd_is_km;
+      sd_stateVariable = SD_IDLE;
+    #ifdef SD_DEBUG
+      Serial.print("Measured speed: ");
+      Serial.print(PDU1_storage.DispSpeed);  
+      Serial.print("Max speed: ");
+      Serial.println(storage.mvs_spd_max_speed);  
+      Serial.println(PDU1_storage.UnitSpeed);
+     // sd_msCounts = 0;
+     #endif
+      break;
+    }
+  }

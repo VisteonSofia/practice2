@@ -37,7 +37,8 @@ switch (ipc_stateVariable){
       Wire.write((byte *)&PDU1_storage,sizeof(PDU1_storage));
       Wire.endTransmission();    // stop transmitting
       ipc_stateVariable = IPC_IDLE;
-      ipc_msCounts = 0;  
+      ipc_msCounts = 0; 
+      //Serial.println(PDU1_storage.DispSpeed); 
     break;
     }
   }

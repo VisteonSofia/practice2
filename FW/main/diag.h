@@ -1,7 +1,7 @@
   #include <EEPROM.h>
 
   // ID of the settings block
-  #define CONFIG_VERSION "Ox2"
+  #define CONFIG_VERSION "Ox1"
   
   // Tell it where to store your config data in EEPROM
   #define CONFIG_START 32
@@ -12,7 +12,9 @@
     char version[4];
     // The variables of your settings
     uint16_t mvs_spd_max_speed:9; //max_speed 512
-    bool mvs_spd_is_km, mvs_temp_is_celsius;
+    uint32_t mvs_odo_range:17;
+    bool mvs_spd_is_km, mvs_temp_is_celsius, mvs_is_acoustic_on;
+    uint8_t mvs_end;
 //    char c;
 //    long d;
 //    float e[6];
@@ -20,7 +22,9 @@
     CONFIG_VERSION,
     // The default values
     250, 
-    true, true
+    0,
+    true, true, true,
+    255
  //   'c',
  //   10000,
  //   {4.5, 5.5, 7, 8.5, 10, 12}
