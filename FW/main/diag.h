@@ -1,17 +1,15 @@
   #include <EEPROM.h>
 
   // ID of the settings block
-  #define CONFIG_VERSION "Ox1"
+  #define CONFIG_VERSION 255
   
   // Tell it where to store your config data in EEPROM
   #define CONFIG_START 32
   
   // Example settings structure
   struct StoreStruct {
-    // This is for more detection if they are your settings
-    char version[4];
     // The variables of your settings
-    uint16_t mvs_spd_max_speed:9; //max_speed 512
+    uint16_t diag_version,mvs_spd_max_speed:9; //max_speed 512
     uint32_t mvs_odo_range:17;
     bool mvs_spd_is_km, mvs_temp_is_celsius, mvs_is_acoustic_on;
     uint8_t mvs_end;
@@ -33,9 +31,7 @@
   void loadConfig() {
     // To make sure there are settings, and they are YOURS!
     // If nothing is found it will use the default settings.
-    if (EEPROM.read(CONFIG_START + 0) == CONFIG_VERSION[0] &&
-        EEPROM.read(CONFIG_START + 1) == CONFIG_VERSION[1] &&
-        EEPROM.read(CONFIG_START + 2) == CONFIG_VERSION[2])
+    if (EEPROM.read(CONFIG_START) == CONFIG_VERSION)
       for (unsigned int t=0; t<sizeof(storage); t++)
         *((char*)&storage + t) = EEPROM.read(CONFIG_START + t);
   }

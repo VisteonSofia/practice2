@@ -43,22 +43,23 @@ void diag_execution(String input){
       
       data= input.substring(input.indexOf(" ")+1).toInt();
       input.remove(input.indexOf(" "));
-      if(input.toInt()<4){
+      if(input.toInt()<1){
         Serial.println("Version is read only");
         Serial.println("7F 22");
+        return;
       }
       if(data>255){
         Serial.println("You write byte by byte. Accepted values[0-255]");
         Serial.println("7F 22");
       }
-      else if(input.toInt()==4&&PDU1_storage.DispSpeed!=0){
+      else if((input.toInt()==2||input.toInt()==3)&&PDU1_storage.DispSpeed!=0){
         Serial.print("Current speed:");
         Serial.println(PDU1_storage.DispSpeed);
         Serial.println("7F 22");
       }
       else{
 
-        EEPROM.write(32 + input.toInt(), data);
+        EEPROM.write(CONFIG_START + input.toInt(), data);
        Serial.print("6F ");
        Serial.print(input);
        Serial.print(" ");

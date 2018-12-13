@@ -6,9 +6,12 @@
 #define POT_PIN A0
 
 
+
 enum sd_state {SD_INIT, SD_IDLE, SD_READING } sd_stateVariable;
 uint32_t sd_msCounts=0;
 uint32_t sd_prevMillis=0;
+int current_speed[5]={0,0,0,0,0};
+int i,sum;
 
 void speedo_state_machine() {
  if(sd_prevMillis!=millis()) {
@@ -34,7 +37,14 @@ switch (sd_stateVariable){
      break; 
 
     case SD_READING:
-      PDU1_storage.DispSpeed= map(analogRead(POT_PIN), 0, 1023, 0, storage.mvs_spd_max_speed);
+      for (i=sum=0;i<4;i++){
+        current_speed[i]=current_speed[i+1];
+        sum+=current_speed[i];
+      }
+      current_speed[4]=map(analogRead(POT_PIN), 0, 1023, 0, storage.mvs_spd_max_speed);
+      sum+=current_speed[4];
+      sum/=5;
+      PDU1_storage.DispSpeed= sum;
       PDU1_storage.UnitSpeed= storage.mvs_spd_is_km;
       sd_stateVariable = SD_IDLE;
     #ifdef SD_DEBUG
