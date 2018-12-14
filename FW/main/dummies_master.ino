@@ -3,10 +3,10 @@
 #define DIAG
 #define INT_SERIAL
 #define BUZZER_PIN 4
+#define ODOMETER
 
 #include "diag.h"
 #include "diag_execution.h"
-
 #include "EasyBuzzer.h"
 
 #define PRESSED 0 //buttons state
@@ -41,7 +41,7 @@ void loop() {
     stringComplete = false;
   } 
   speedo_state_machine();
-  
+  tm_state_machine();
   EasyBuzzer.update();
   delay(10);
 }

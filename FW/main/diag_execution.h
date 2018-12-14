@@ -1,5 +1,5 @@
 #include "ecu_extract.h"
-#define DIAG_DEBUG
+// #define DIAG_DEBUG
 #define POT_PIN A0
 
 uint16_t t,data;

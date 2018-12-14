@@ -1,7 +1,7 @@
 
 #define POT_PIN A0
 
-#define SD_DEBUG
+// #define SD_DEBUG
 #define SD_IDLE_TIME 300 //0,3sec
 #define POT_PIN A0
 

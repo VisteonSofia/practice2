@@ -1,7 +1,7 @@
-#ifdef TRIPMETER
+#ifdef ODOMETER
 #include <EEPROM.h>
   
-#define TM_DEBUG
+// #define TM_DEBUG
 #define TM_IDLE_TIME 1000 //1sec
 #define TM_RESET_BUTTON 7
 
@@ -9,17 +9,24 @@ enum tm_state {TM_INIT, TM_IDLE, TM_CALCULATING} tm_stateVariable;
 uint32_t tm_msCounts=0;
 uint32_t tm_prevMillis=0;
 bool prevButtonState = 1;
-float dist_temp;
+uint16_t dist_temp;
 
 void tm_state_machine() 
 {
   
- if (tm_prevMillis != millis()) {
-      tm_msCounts += (millis() - tm_prevMillis);
-          
-      tm_prevMillis = millis();
-    }
+  if (tm_prevMillis != millis()) {
+    tm_msCounts += (millis() - tm_prevMillis);
+        
+    tm_prevMillis = millis();
+  }
 
+  if(digitalRead(TM_RESET_BUTTON)== PRESSED && prevButtonState== RELEASED) {      
+    tm_stateVariable = TM_IDLE;
+    PDU1_storage.DispDist=storage.mvs_odo_range=dist_temp=0;
+    saveConfig();
+    tm_msCounts = 0;
+  } 
+  prevButtonState=digitalRead(TM_RESET_BUTTON);
 
 
   switch (tm_stateVariable)
@@ -33,11 +40,6 @@ void tm_state_machine()
     break;
 
     case TM_IDLE:
-       if(digitalRead(TM_RESET_BUTTON)== PRESSED && prevButtonState== RELEASED) {      
-          tm_stateVariable = TM_INIT;
-          tm_msCounts = 0;
-          break;
-        } else prevButtonState=digitalRead(TM_RESET_BUTTON);
         
       if(tm_msCounts >= TM_IDLE_TIME)
       {
@@ -47,20 +49,13 @@ void tm_state_machine()
     break; 
 
     case TM_CALCULATING:
-    /*  if (PDU1_storage.DispSpeed==SD_SNA)
-      {
-          tm_stateVariable = TM_IDLE;
-          tm_msCounts = 0;
-          
-          break; // abort if no speed is available from the corresponding feature
-      }*/
-        
-       dist_temp += ((uint32_t)((uint32_t)PDU1_storage.DispSpeed * TM_IDLE_TIME)/3600); // Multiplying the speed value and the time value and normalizing the value, adding the result to the previous value
+
+       dist_temp += ((uint32_t)((uint32_t)PDU1_storage.DispSpeed * TM_IDLE_TIME)/3600);
       
     
-    if (dist_temp > 1)
+    if (dist_temp > 1000)
     {
-       dist_temp--;
+       dist_temp-=1000;
        storage.mvs_odo_range++;
        PDU1_storage.DispDist++;
        saveConfig();
@@ -78,9 +73,9 @@ void tm_state_machine()
       #ifdef TM_DEBUG
         Serial.print("Driven distance: ");
         Serial.print(PDU1_storage.DispDist); 
-        Serial.print("m; Driven distance since last save: ");
+        Serial.print("km; Driven distance since last save: ");
         Serial.print(dist_temp);
-        Serial.println("km");      
+        Serial.println("m");      
       #endif
     break;
   }

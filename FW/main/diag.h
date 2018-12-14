@@ -1,7 +1,7 @@
   #include <EEPROM.h>
 
   // ID of the settings block
-  #define CONFIG_VERSION 255
+  #define CONFIG_VERSION 1
   
   // Tell it where to store your config data in EEPROM
   #define CONFIG_START 32
