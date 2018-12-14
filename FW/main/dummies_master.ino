@@ -2,9 +2,12 @@
 #define BLINKERS
 #define DIAG
 #define INT_SERIAL
+#define BUZZER_PIN 4
 
 #include "diag.h"
 #include "diag_execution.h"
+
+#include "EasyBuzzer.h"
 
 #define PRESSED 0 //buttons state
 #define RELEASED 1 //buttons state
@@ -18,14 +21,14 @@ void setup() {
   Serial.println("Ready, steady, go!");
   Serial.flush();
 #endif
-  
+
 #ifdef DIAG
   loadConfig();
   delay(100);
   saveConfig();
 #endif
-
-  
+  EasyBuzzer.setPin(BUZZER_PIN);
+  EasyBuzzer.beep( 2000, 3);
 }
 
 void loop() {
@@ -39,8 +42,8 @@ void loop() {
   } 
   speedo_state_machine();
   
+  EasyBuzzer.update();
   delay(10);
-
 }
 
 void serialEvent() {
