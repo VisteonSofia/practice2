@@ -159,6 +159,8 @@
       }
     }
     else {
+      if(bs_stateVariable != BS_WAIT) 
+          EasyBuzzer.singleBeep(500,30);
       bs_stateVariable = BS_WAIT;
     }
   #ifdef BL_DEBUG
@@ -194,6 +196,7 @@
         PDU1_storage.HMI_left_blinker_state = 1;
 //        digitalWrite(rightBlinkerLED, LOW);
         PDU1_storage.HMI_right_blinker_state = 0;
+        EasyBuzzer.singleBeep(700,40);
          
         active_time = BS_ACTIVE_TIME;
         waiting_time = BS_WAITING_TIME;
@@ -204,7 +207,8 @@
         PDU1_storage.HMI_left_blinker_state = 0;
  //       digitalWrite(rightBlinkerLED, HIGH);
         PDU1_storage.HMI_right_blinker_state = 1;
-        
+        EasyBuzzer.singleBeep(700,40);
+                
         active_time = BS_ACTIVE_TIME;
         waiting_time = BS_WAITING_TIME;
         break;
@@ -213,7 +217,9 @@
  //       digitalWrite(leftBlinkerLED, HIGH);
         PDU1_storage.HMI_left_blinker_state = 1;
  //       digitalWrite(rightBlinkerLED, HIGH);
-        PDU1_storage.HMI_right_blinker_state = 1;    
+        PDU1_storage.HMI_right_blinker_state = 1;
+        EasyBuzzer.singleBeep(700,40);
+                
         active_time = BS_ACTIVE_TIME;
         waiting_time = BS_WAITING_TIME;
         break;
