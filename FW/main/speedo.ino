@@ -46,6 +46,7 @@ switch (sd_stateVariable){
       sum/=5;
       PDU1_storage.DispSpeed= sum;
       PDU1_storage.UnitSpeed= storage.mvs_spd_is_km;
+      PDU1_storage.MaxSpeed= storage.mvs_spd_max_speed;
       sd_stateVariable = SD_IDLE;
     #ifdef SD_DEBUG
       Serial.print("Measured speed: ");
