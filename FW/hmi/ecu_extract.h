@@ -6,9 +6,10 @@ struct PDU1_Struct {
   uint16_t DispSpeed;
   uint8_t UnitSpeed;
   uint32_t DispDist;
+  uint16_t MaxSpeed;
   int DispTemp;
   uint8_t UnitTemp;
-  uint8_t padding[17];  // Reduce as needed!!!!!!!!!!!!!!
+  uint8_t padding[15];  // Reduce as needed!!!!!!!!!!!!!!
   uint8_t alive=0;
   uint8_t crc;
   
