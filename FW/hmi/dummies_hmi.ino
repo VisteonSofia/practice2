@@ -36,13 +36,6 @@ Adafruit_ST7735 tft = Adafruit_ST7735(_cs, _dc, _rst);
 #define ST77XX_GREENYELLOW 0xAFE5  ///< 173, 255,  41
 #define ST77XX_PINK        0xFC18  ///< 255, 130, 198
 
-#define a 6
-#define b a+g
-#define c 12
-#define d 14
-#define e a
-#define f 18
-#define g 6
 
 #define IPC_ADDRESS 8
 
@@ -68,26 +61,6 @@ void loop() {
   hmi_state_machine();
 #endif
 
-   if(PDU1_storage.HMI_left_blinker_state == 1) {
-
-     tft.fillRect(f, b, d, c, ST77XX_GREEN);
-     tft.fillTriangle( f,a,e,b+c/2,f,b+c+g,ST77XX_GREEN);
-    }
-    else {
-     tft.fillRect(f, b, d, c, ST77XX_BLACK);
-     tft.fillTriangle( f,a,e,b+c/2,f,b+c+g,ST77XX_BLACK);
-   }
-
-   if(PDU1_storage.HMI_right_blinker_state == 1) {
-     tft.fillRect(160-f-d, b, d, c, ST77XX_GREEN);
-     tft.fillTriangle( 160-f,a,160-e,b+c/2,160-f,b+c+g,ST77XX_GREEN);
-    }
-    else {
-     tft.fillRect(160-f-d, b, d, c, ST77XX_BLACK);
-     tft.fillTriangle( 160-f,a,160-e,b+c/2,160-f,b+c+g,ST77XX_BLACK);
-   }
-
- delay(5);
 }
 
 void receiveEvent(int howMany) {
