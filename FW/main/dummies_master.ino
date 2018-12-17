@@ -43,6 +43,7 @@ void loop() {
   speedo_state_machine();
   tm_state_machine();
   EasyBuzzer.update();
+  temp_state_machine();
   delay(10);
 }
 

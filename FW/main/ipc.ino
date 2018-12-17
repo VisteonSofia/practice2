@@ -2,7 +2,7 @@
 
 #include <Wire.h>
 
-#define IPC_DEBUG
+//#define IPC_DEBUG
 #define IPC_IDLE_TIME 50 //0,05sec
 #define IPC_ADDRESS 8
 
