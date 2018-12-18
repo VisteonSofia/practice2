@@ -55,6 +55,8 @@
 #define IPC_ADDRESS 8
 #define height 128
 #define width 160
+#define fontHeight 8
+#define fontWidth 5
 
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(HMI_RX_PIN,HMI_TX_PIN); // pin 2 = TX, pin 3 = RX (unused)
@@ -71,6 +73,8 @@ enum hmi_state {HMI_INIT, HMI_STARTUP, HMI_STARTED, HMI_IDLE, HMI_REFRESH} hmi_s
 uint32_t hmi_msCounts=0,war_msCounts;
 uint32_t hmi_prevMillis=0;
 int i=0;
+String currentODOString = "----";
+uint8_t ODOStringlength = 4;
 int bargraph=0;
 char *units = "km/h";
 uint8_t lastUnit = 2;
@@ -82,6 +86,7 @@ int tempMantis = 0;
 uint8_t tempExp = 0; 
 int pl = 80,q = 94,h = 20;
 bool available_warning=false;
+
 void hmi_state_machine() {
  if(hmi_prevMillis!=millis()) {
   hmi_msCounts++;
@@ -184,11 +189,11 @@ void drawBlinkers(int BlinkerLeft, int BlinkerRight){
 
    if(BlinkerRight == 1) {
      tft.fillRect(160-f-d, b, d, c, ST77XX_GREEN);
-     tft.fillTriangle( 160-f,a,160-e,b+c/2,160-f,b+c+g,ST77XX_GREEN);
+     tft.fillTriangle( width-f,a,width-e,b+c/2,width-f,b+c+g,ST77XX_GREEN);
     }
     else {
      tft.fillRect(160-f-d, b, d, c, ST77XX_BLACK);
-     tft.fillTriangle( 160-f,a,160-e,b+c/2,160-f,b+c+g,ST77XX_BLACK);
+     tft.fillTriangle( width-f,a,width-e,b+c/2,width-f,b+c+g,ST77XX_BLACK);
    }
   
 }
@@ -198,22 +203,24 @@ void drawODO(uint32_t ODO, uint8_t SpeedUnit){
   if (SpeedUnit == 0){
     ODO = ODO * 0.6213;
   }
-  tft.setCursor(width - 35 , height - 8);
+  currentODOString = (String)ODO;
+  ODOStringLength = currentODOString.size();
+  tft.setCursor(width - fontWidth*ODOStringLength , height - fontHeight);
   tft.setTextColor(TXT_COLOR, BG_COLOR);
   tft.setTextSize(1);
-  tft.print(ODO);
+  tft.print(currentODOString);
 
   
 
   if (SpeedUnit == lastUnit){}
   else if (SpeedUnit == 1){
-    tft.setCursor(width - 20 , height - 8);
+    tft.setCursor(width - 4*fontWidth , height - fontHeight);
     tft.setTextColor(TXT_COLOR, BG_COLOR);
     tft.setTextSize(1);
     tft.print(" km");
     lastUnit = 1;
   }else{
-    tft.setCursor(width - 20 , height - 8);
+    tft.setCursor(width - 4*fontWidth , height - fontHeight);
     tft.setTextColor(TXT_COLOR, BG_COLOR);
     tft.setTextSize(1);
     tft.print(" mi");
@@ -226,7 +233,7 @@ void drawSpeedo(uint16_t Speed, uint8_t SpeedUnit, uint16_t MaxSpeed){
     units = " km/h";
   }
   else{
-    units = " mph";
+    units = " mph ";
     Speed = Speed * 0.6213;
     MaxSpeed = MaxSpeed * 0.6213;
   }
@@ -261,7 +268,7 @@ void drawWarning (bool on) {
 void drawTemp(int Temp, uint8_t TempUnit){
   
   if (TempUnit == 2||Temp==initialTemp){
-    tft.setCursor(0 , height - 8);
+    tft.setCursor(0 , height - fontHeight);
     tft.setTextColor(TXT_COLOR, BG_COLOR);
     tft.setTextSize(1);
     tft.print(initialTempValue);
@@ -275,7 +282,7 @@ void drawTemp(int Temp, uint8_t TempUnit){
     tempMantis = Temp/10;
     tempExp = Temp%10;
     printTemp = (String)tempMantis + "." + (String)tempExp+ char(247) + unit;
-    tft.setCursor(0 , height - 8);
+    tft.setCursor(0 , height - fontHeight);
     tft.setTextColor(TXT_COLOR, BG_COLOR);
     tft.setTextSize(1);
     tft.print(printTemp);
