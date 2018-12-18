@@ -5,8 +5,8 @@ struct PDU1_Struct {
   uint8_t HMI_left_blinker_state;   // 0 = deactivated, 1 = active, 2 = RES, 3 = SNA
   uint16_t DispSpeed;
   uint8_t UnitSpeed;
-  uint32_t DispDist;
   uint16_t MaxSpeed;
+  uint32_t DispDist;
   int DispTemp;
   uint8_t UnitTemp;
   uint8_t padding[15];  // Reduce as needed!!!!!!!!!!!!!!

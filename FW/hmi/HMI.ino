@@ -1,10 +1,10 @@
-#define HMI_STARTING_TIME 500 //0,5sec
-#define HMI_STARTUP_TIME 5000 //5sec
-#define HMI_IDLE_TIME 350 //0,35sec
+#define HMI_STARTING_TIME 50 //0,5sec
+#define HMI_STARTUP_TIME 50 //5sec
+#define HMI_IDLE_TIME 50 //0,05sec to be in sync with Acoustics
 #define HMI_TX_PIN 2
 #define HMI_RX_PIN 3
 #include "ecu_extract.h"
-#include "IF1.h"
+#include "a_IF1.h"
 #include <Wire.h>
 #include <Adafruit_GFX.h>     // Core graphics library
 #include <Adafruit_ST7735.h> // Hardware-specific library for ST7735
@@ -25,7 +25,34 @@
 #define f 18
 #define g 6
 
+// Color definitions
+#define _BLACK       0x0000  ///<   0,   0,   0
+#define _NAVY        0x000F  ///<   0,   0, 123
+#define _DARKGREEN   0x03E0  ///<   0, 125,   0
+#define _DARKCYAN    0x03EF  ///<   0, 125, 123
+#define _MAROON      0x7800  ///< 123,   0,   0
+#define _PURPLE      0x780F  ///< 123,   0, 123
+#define _OLIVE       0x7BE0  ///< 123, 125,   0
+#define _LIGHTGREY   0xC618  ///< 198, 195, 198
+#define _DARKGREY    0x7BEF  ///< 123, 125, 123
+#define _BLUE        0x001F  ///<   0,   0, 255
+#define _GREEN       0x07E0  ///<   0, 255,   0
+#define _CYAN        0x07FF  ///<   0, 255, 255
+#define _RED         0xF800  ///< 255,   0,   0
+#define _MAGENTA     0xF81F  ///< 255,   0, 255
+#define _YELLOW      0xFFE0  ///< 255, 255,   0
+#define _WHITE       0xFFFF  ///< 255, 255, 255
+#define _ORANGE      0xFD20  ///< 255, 165,   0
+#define _GREENYELLOW 0xAFE5  ///< 173, 255,  41
+#define _PINK        0xFC18  ///< 255, 130, 198
+#define _GREY        0x2104  // Dark grey 16 bit colour
+#define USE_LIGHT_SCHEME
+#define BG_COLOR _BLACK
+#define TXT_COLOR _WHITE
+#define BG_GREY _LIGHTGREY
 #define IPC_ADDRESS 8
+#define height 128
+#define width 160
 
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(HMI_RX_PIN,HMI_TX_PIN); // pin 2 = TX, pin 3 = RX (unused)
@@ -43,6 +70,12 @@ uint32_t hmi_msCounts=0;
 uint32_t hmi_prevMillis=0;
 int i=0;
 int bargraph=0;
+char *units = "km/h";
+uint8_t lastUnit = 2;
+String printTemp = "";
+String unit = "C";
+int tempMantis = 0;
+uint8_t tempExp = 0; 
 
 void hmi_state_machine() {
  if(hmi_prevMillis!=millis()) {
@@ -53,7 +86,6 @@ void hmi_state_machine() {
 switch (hmi_stateVariable){
   
   case HMI_INIT:
-     mySerial.begin(9600); // set up serial port for 9600 baud
      hmi_stateVariable = HMI_STARTUP;
      hmi_msCounts=0;
   break;
@@ -93,52 +125,20 @@ switch (hmi_stateVariable){
      
 
     case HMI_REFRESH:
-      //uint32_t temperature = getTemperature();
       uint32_t Odometer = getOdometer();
       uint16_t Speed = getSpeed();
       uint16_t MaxSpeed = getMaxSpeed();
-      uint8_t SpeedUnit = getSpeedunit();
+      uint8_t SpeedUnit = getSpeedUnit();
       uint8_t BlinkerLeft = getBlinkerLeft();
       uint8_t BlinkerRight = getBlinkerRight();
       int Temp = getTemperature();
       uint8_t TempUnit =  getTempUnit();
 
       drawBlinkers(BlinkerLeft, BlinkerRight);
-      drawSpeedo();
-      
-      /*
-      char temp[32]={0};
-      if (getHMItempStat())
-        {
-          sprintf(temp, "-----");
-        }
-        else {
-          sprintf(temp,"%d.%d", (int)temperature,((int)(temperature *100)%100));
-        }
-      char trip[32]={0};
-      sprintf(trip,"%d", tripmeter);
-      mySerial.write(254); // move cursor to beginning of first line
-      mySerial.write(128);
-      mySerial.write(temp);
-      mySerial.write((char)223);
-      mySerial.write("C    ");
-      
-      mySerial.write(trip);
-      mySerial.write("km ");
-     
-      mySerial.write(254); 
-      mySerial.write(192);
-      mySerial.write("                ");
-      
-      mySerial.write(254); 
-      mySerial.write(192);
-      
-      bargraph = hmispeed/10;
-      for (i=0;i<bargraph;i++)
-        {
-          mySerial.write((char)219);
-        }
-      */ 
+      drawSpeedo(Speed,SpeedUnit,MaxSpeed);
+      drawODO(Odometer, SpeedUnit);
+      drawTemp(Temp, TempUnit);
+
       hmi_stateVariable = HMI_IDLE;
       hmi_msCounts = 0;
 
@@ -169,19 +169,68 @@ void drawBlinkers(int BlinkerLeft, int BlinkerRight){
   
 }
 
-void drawODO(){
+void drawODO(uint32_t ODO, uint8_t SpeedUnit){
+
+  if (SpeedUnit == 0){
+    ODO = ODO * 0.6213;
+  }
+  tft.setCursor(width - 35 , height - 8);
+  tft.setTextColor(TXT_COLOR, BG_COLOR);
+  tft.setTextSize(1);
+  tft.print(ODO);
+
+  
+
+  if (SpeedUnit == lastUnit){}
+  else if (SpeedUnit == 1){
+    tft.setCursor(width - 20 , height - 8);
+    tft.setTextColor(TXT_COLOR, BG_COLOR);
+    tft.setTextSize(1);
+    tft.print(" km");
+    lastUnit = 1;
+  }else{
+    tft.setCursor(width - 20 , height - 8);
+    tft.setTextColor(TXT_COLOR, BG_COLOR);
+    tft.setTextSize(1);
+    tft.print(" mi");
+    lastUnit = 0;
+  }
 }
 
 void drawSpeedo(uint16_t Speed, uint8_t SpeedUnit, uint16_t MaxSpeed){
   if (SpeedUnit == 1){
-    char *units = " km/h"
+    units = " km/h";
   }
-  else
-    char *units = " mph"
-  ringMeter((int)Speed, 0, MaxSpeed, 32, 16, 52, units, 4, 10);
+  else{
+    units = " mph";
+    Speed = Speed * 0.6213;
+    MaxSpeed = MaxSpeed * 0.6213;
+  }
+  ringMeter((int)Speed, 0, MaxSpeed, 24, 8, 56, units, 4, 5);
 }
 
-void drawTemp(){
+void drawTemp(int Temp, uint8_t TempUnit){
+
+  if (TempUnit == 2){
+    tft.setCursor(0 , height - 8);
+    tft.setTextColor(TXT_COLOR, BG_COLOR);
+    tft.setTextSize(1);
+    tft.print("---");
+  }else{
+    if (TempUnit == 1){
+      unit = "C";
+    }else{
+      unit = "F";
+    }
+    tempMantis = Temp/10;
+    tempExp = Temp%10;
+    printTemp = (String)tempMantis + "." + (String)tempExp + unit;
+    tft.setCursor(0 , height - 8);
+    tft.setTextColor(TXT_COLOR, BG_COLOR);
+    tft.setTextSize(1);
+    tft.print(printTemp);
+  }
+  
 }
 
 // #########################################################################
@@ -254,10 +303,10 @@ int ringMeter(int value, int vmin, int vmax, int x, int y, int r, char *units, b
 
   tft.setCursor(x - 30, y - 10);
   tft.setTextColor(TXT_COLOR, BG_COLOR);
-  tft.setTextSize(3);
+  tft.setTextSize(2);
   tft.print(buf);
 
-  tft.setCursor(x - 15, y + 40);
+  tft.setCursor(x - 18, y + 8);
   tft.setTextColor(TXT_COLOR, BG_COLOR);
   tft.setTextSize(1);
   tft.print(units);

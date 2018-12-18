@@ -1,19 +1,13 @@
-#include "ecu_extract.h"
-#include "IF1.h"
+//#include "IF1.h"
 #include <Wire.h>
 
 
 #define LED_PIN 3
-static const char _sclk = 13;
-static const char  _mosi = 11;
-static const char _cs = 10;
-static const char _dc = 9;
-static const char _rst = 8;
 
-#include <Adafruit_GFX.h>     // Core graphics library
-#include <Adafruit_ST7735.h> // Hardware-specific library for ST7735
-#include <SPI.h>
-Adafruit_ST7735 tft = Adafruit_ST7735(_cs, _dc, _rst);
+//#include <Adafruit_GFX.h>     // Core graphics library
+//#include <Adafruit_ST7735.h> // Hardware-specific library for ST7735
+//#include <SPI.h>
+
 
 // Color definitions
 #define ST77XX_BLACK       0x0000  ///<   0,   0,   0
@@ -39,7 +33,7 @@ Adafruit_ST7735 tft = Adafruit_ST7735(_cs, _dc, _rst);
 
 #define IPC_ADDRESS 8
 
-//#define HMI
+#define HMI
 
 void setup() {
   
@@ -69,7 +63,6 @@ void receiveEvent(int howMany) {
 
    //Serial.print("Expected bytes: ");
    //Serial.println(sizeof(PDU1_storage));         // print 
-
    if( howMany != sizeof(PDU1_storage) ) return;
    Wire.readBytes( (byte *) &PDU1_storage, howMany);
 
