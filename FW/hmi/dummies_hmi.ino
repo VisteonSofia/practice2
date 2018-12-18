@@ -66,10 +66,10 @@ void receiveEvent(int howMany) {
    if( howMany != sizeof(PDU1_storage) ) return;
    Wire.readBytes( (byte *) &PDU1_storage, howMany);
 
-   Serial.print("Received left blinker:");
-   Serial.print(PDU1_storage.HMI_left_blinker_state); 
-   Serial.print(" Received right blinker:");
-   Serial.println(PDU1_storage.HMI_right_blinker_state); 
-   
+//   Serial.print("Received left blinker:");
+//   Serial.print(PDU1_storage.HMI_left_blinker_state); 
+//   Serial.print(" Received right blinker:");
+//   Serial.println(PDU1_storage.HMI_right_blinker_state); 
+//   
    
 }

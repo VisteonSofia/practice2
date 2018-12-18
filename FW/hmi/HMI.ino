@@ -1,5 +1,5 @@
-#define HMI_STARTING_TIME 50 //0,5sec
-#define HMI_STARTUP_TIME 50 //5sec
+#define HMI_STARTING_TIME 100//0,5sec
+//#define HMI_STARTUP_TIME 5000 //5sec
 #define HMI_IDLE_TIME 50 //0,05sec to be in sync with Acoustics
 #define HMI_TX_PIN 2
 #define HMI_RX_PIN 3
@@ -24,6 +24,8 @@
 #define e a
 #define f 18
 #define g 6
+
+#define PDU_TIMEOUT 500
 
 // Color definitions
 #define _BLACK       0x0000  ///<   0,   0,   0
@@ -66,17 +68,20 @@ static const char _rst = 8;
 Adafruit_ST7735 tft = Adafruit_ST7735(_cs, _dc, _rst);
 
 enum hmi_state {HMI_INIT, HMI_STARTUP, HMI_STARTED, HMI_IDLE, HMI_REFRESH} hmi_stateVariable;
-uint32_t hmi_msCounts=0;
+uint32_t hmi_msCounts=0,war_msCounts;
 uint32_t hmi_prevMillis=0;
 int i=0;
 int bargraph=0;
 char *units = "km/h";
 uint8_t lastUnit = 2;
 String printTemp = "";
+#define initialTemp -1000
+#define initialTempValue "--.-"
 String unit = "C";
 int tempMantis = 0;
 uint8_t tempExp = 0; 
-
+int pl = 80,q = 94,h = 20;
+bool available_warning=false;
 void hmi_state_machine() {
  if(hmi_prevMillis!=millis()) {
   hmi_msCounts++;
@@ -91,24 +96,26 @@ switch (hmi_stateVariable){
   break;
 
   case HMI_STARTUP:
+    tft.setTextColor( _ORANGE);
+    tft.setTextSize(2);
+    tft.setCursor(25, 32);
+    tft.print("Powered");
+    
+    tft.setCursor(42, 57);
+    tft.print("by");
+    
+    tft.setCursor(50, 82);
+    tft.print("VISTEON");
+    
     if(hmi_msCounts >= HMI_STARTING_TIME)
     {
-      mySerial.write(254); // move cursor to beginning of first line
-      mySerial.write(128);
-
-      mySerial.write("POWERED         "); 
-      mySerial.write("      BY VISTEON");
-
-      mySerial.write(254); // move cursor to beginning of first line
-      mySerial.write(128);
-
-      hmi_stateVariable = HMI_STARTED;
-      hmi_msCounts = 0;
+        tft.fillScreen(ST77XX_BLACK);
+        hmi_stateVariable = HMI_STARTED;
+        hmi_msCounts = 0;
     }
-     break; 
    
    case HMI_STARTED:
-    if(hmi_msCounts >= HMI_STARTUP_TIME)
+    if(hmi_msCounts >= HMI_STARTING_TIME)
     {
       hmi_stateVariable = HMI_IDLE;
       hmi_msCounts = 0;
@@ -119,28 +126,45 @@ switch (hmi_stateVariable){
     if(hmi_msCounts >= HMI_IDLE_TIME)
     {
       hmi_stateVariable = HMI_REFRESH;
-      hmi_msCounts = 0;
     }
      break; 
      
 
     case HMI_REFRESH:
-      uint32_t Odometer = getOdometer();
-      uint16_t Speed = getSpeed();
-      uint16_t MaxSpeed = getMaxSpeed();
-      uint8_t SpeedUnit = getSpeedUnit();
-      uint8_t BlinkerLeft = getBlinkerLeft();
-      uint8_t BlinkerRight = getBlinkerRight();
-      int Temp = getTemperature();
-      uint8_t TempUnit =  getTempUnit();
-
-      drawBlinkers(BlinkerLeft, BlinkerRight);
-      drawSpeedo(Speed,SpeedUnit,MaxSpeed);
-      drawODO(Odometer, SpeedUnit);
-      drawTemp(Temp, TempUnit);
-
-      hmi_stateVariable = HMI_IDLE;
-      hmi_msCounts = 0;
+      bool checkPDU = pduStatus();
+      if (checkPDU){
+        if(available_warning){
+          available_warning=false;
+          drawWarning(available_warning);
+        }
+        
+        uint32_t Odometer = getOdometer();
+        uint16_t Speed = getSpeed();
+        uint16_t MaxSpeed = getMaxSpeed();
+        uint8_t SpeedUnit = getSpeedUnit();
+        uint8_t BlinkerLeft = getBlinkerLeft();
+        uint8_t BlinkerRight = getBlinkerRight();
+        int Temp = getTemperature();
+        uint8_t TempUnit =  getTempUnit();
+  
+        drawBlinkers(BlinkerLeft, BlinkerRight);
+        drawSpeedo(Speed,SpeedUnit,MaxSpeed);
+        drawODO(Odometer, SpeedUnit);
+        drawTemp(Temp, TempUnit);
+        
+        war_msCounts=0;
+      }
+      else{
+          Serial.println(war_msCounts);
+        war_msCounts +=hmi_msCounts;
+        if(war_msCounts>PDU_TIMEOUT&&!available_warning){
+            available_warning=true;
+            drawWarning(available_warning);
+        }
+      }
+        hmi_stateVariable = HMI_IDLE;
+        hmi_msCounts = 0;
+      
 
       break;
     }
@@ -208,23 +232,49 @@ void drawSpeedo(uint16_t Speed, uint8_t SpeedUnit, uint16_t MaxSpeed){
   }
   ringMeter((int)Speed, 0, MaxSpeed, 24, 8, 56, units, 4, 5);
 }
+  
+void drawWarning (bool on) {
+    if(on){
+//      tft.drawRoundRect( p,  q,  l,  h, 3, ST77XX_CYAN);
+//      tft.fillRoundRect(p+1,  q+1, l-2,  h-2, 2, ST77XX_WHITE);
+    
+//      tft.drawTriangle(p+l/2, q+4, p+l/2-12, q+h-16, p+l/2+12, q+h-16, ST77XX_RED);
+      tft.fillTriangle(pl, q, pl-12, q+h, pl+12, q+h,ST77XX_RED);
+    
+      tft.setCursor(pl-5,q+h-15);
+      tft.setTextColor( ST77XX_WHITE);
+      tft.setTextSize(2);
+      tft.print("!");
+    
+//      tft.setCursor(p+l/2-10, q+h-13);
+//      tft.setTextColor( ST77XX_BLACK);
+//      tft.setTextSize(1);
+//      tft.print("com.error");
+    }
+    else{
+//      tft.drawRoundRect( p,  q,  l,  h, 3, ST77XX_BLACK);
+                            tft.fillTriangle(pl, q, pl-12, q+h, pl+12, q+h,ST77XX_BLACK);
 
+    }
+    
+} 
 void drawTemp(int Temp, uint8_t TempUnit){
-
-  if (TempUnit == 2){
+  
+  if (TempUnit == 2||Temp==initialTemp){
     tft.setCursor(0 , height - 8);
     tft.setTextColor(TXT_COLOR, BG_COLOR);
     tft.setTextSize(1);
-    tft.print("---");
-  }else{
+    tft.print(initialTempValue);
+  }
+  else{
     if (TempUnit == 1){
-      unit = "C";
+      unit = "C   "; // 3 intervals to draw over longer strings
     }else{
-      unit = "F";
+      unit = "F   "; // 3 intervals to draw over longer strings
     }
     tempMantis = Temp/10;
     tempExp = Temp%10;
-    printTemp = (String)tempMantis + "." + (String)tempExp + unit;
+    printTemp = (String)tempMantis + "." + (String)tempExp+ char(247) + unit;
     tft.setCursor(0 , height - 8);
     tft.setTextColor(TXT_COLOR, BG_COLOR);
     tft.setTextSize(1);
