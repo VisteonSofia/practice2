@@ -3,6 +3,7 @@
 #include <Wire.h>
 
 //#define IPC_DEBUG
+#define IPC_STARTING_TIME 250
 #define IPC_IDLE_TIME 50 //0,05sec
 #define IPC_ADDRESS 8
 
@@ -19,9 +20,11 @@ ipc_prevMillis = millis();
 switch (ipc_stateVariable){
   
   case IPC_INIT:
-     Wire.begin(); // pull up of the I2C
-     ipc_stateVariable = IPC_IDLE;
-     ipc_msCounts=0;
+    if(ipc_msCounts>IPC_STARTING_TIME){
+      Wire.begin(); // pull up of the I2C
+       ipc_stateVariable = IPC_IDLE;
+       ipc_msCounts=0;
+    }
   break;
 
   case IPC_IDLE:

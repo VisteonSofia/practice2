@@ -2,6 +2,7 @@
 // #define TP_DEBUG
 OneWire  ds(2);
 #define tp_IDLE_TIME 1250 // maybe 750ms is enough, maybe not
+#define initialTempValue -1000
 
 
 enum temp_state {TP_INIT, TP_IDLE, TP_READING, TP_DELAYED_READING } tp_stateVariable;
@@ -25,7 +26,7 @@ void temp_state_machine() {
 switch (tp_stateVariable){
   
   case TP_INIT:
-      PDU1_storage.DispTemp= -600;
+      PDU1_storage.DispTemp= initialTempValue;
      PDU1_storage.UnitTemp= storage.mvs_temp_is_celsius;
      tp_stateVariable = TP_IDLE;
           tp_msCounts=0;

@@ -57,10 +57,9 @@ void tm_state_machine()
     {
        dist_temp-=1000;
        storage.mvs_odo_range++;
-       PDU1_storage.DispDist++;
        saveConfig();
     }
-       
+    PDU1_storage.DispDist=storage.mvs_odo_range;
      
      /* if (PDU1_storage.DispDist>=999)
       {

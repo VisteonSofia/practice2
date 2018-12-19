@@ -1,8 +1,8 @@
 
 #define POT_PIN A0
 
-// #define SD_DEBUG
-#define SD_IDLE_TIME 50 //0,05sec
+//#define SD_DEBUG
+#define SD_IDLE_TIME 150 //0,05sec
 #define POT_PIN A0
 
 
@@ -10,9 +10,9 @@
 enum sd_state {SD_INIT, SD_IDLE, SD_READING } sd_stateVariable;
 uint32_t sd_msCounts=0;
 uint32_t sd_prevMillis=0;
-int current_speed[10]={0,0,0,0,0,0,0,0,0,0};
-int i,sum, weights_sum;
-
+int current_speed[5]={0,0,0,0,0};
+#define ARRAY_SIZE 5
+uint16_t i,sum, weights_sum;
 void speedo_state_machine() {
  if(sd_prevMillis!=millis()) {
   sd_msCounts+=millis()-sd_prevMillis;
@@ -25,6 +25,10 @@ switch (sd_stateVariable){
      PDU1_storage.DispSpeed= 0;
      sd_stateVariable = SD_IDLE;
           sd_msCounts=0;
+          
+     for (i=weights_sum=0;i<ARRAY_SIZE;i++){
+         weights_sum+=i+1;
+     }
   break;
 
   case SD_IDLE:
@@ -37,13 +41,12 @@ switch (sd_stateVariable){
      break; 
 
     case SD_READING:
-      for (i=sum=0;i<sizeof(current_speed);i++){
-        current_speed[i]=current_speed[i+1]*(i+1);
-        sum+=current_speed[i];
-        weights_sum+=i+1;
+      for (i=sum=0;i<ARRAY_SIZE-1;i++){
+        current_speed[i]=current_speed[i+1];
+        sum+=current_speed[i]*(ARRAY_SIZE-i);  
       }
-      current_speed[sizeof(current_speed)-1]=map(analogRead(POT_PIN), 0, 1023, 0, storage.mvs_spd_max_speed)*sizeof(current_speed);
-      sum+=current_speed[sizeof(current_speed)-1]*sizeof(current_speed);
+      current_speed[ARRAY_SIZE-1]=map(analogRead(POT_PIN), 0, 1023, 0, storage.mvs_spd_max_speed);
+      sum+=current_speed[ARRAY_SIZE-1];
       sum/=weights_sum;
       PDU1_storage.DispSpeed= sum;
       PDU1_storage.UnitSpeed= storage.mvs_spd_is_km;
