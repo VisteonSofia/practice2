@@ -81,10 +81,6 @@ uint8_t lastUnit = 2;
 String printTemp = "";
 #define initialTemp -1000
 #define initialTempValue " --.-"
-#define initialSpeed 511
-#define initialTempValue "---"
-#define initialOdo 110000
-#define initialTempValue "-----"
 String unit = "C";
 int tempMantis = 0;
 uint8_t tempExp = 0; 
