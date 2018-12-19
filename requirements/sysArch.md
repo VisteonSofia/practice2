@@ -8,4 +8,4 @@
 
 •	SR7 covered with analog input – speedo control potentiometer
 
-![alt text](https://user-images.githubusercontent.com/40429619/50208887-0ddda100-037b-11e9-8ff1-3d6a3d1c0988.png)
+![alt text](https://user-images.githubusercontent.com/40429619/50209383-429e2800-037c-11e9-8cc6-93d5d2c3f9c3.png)
