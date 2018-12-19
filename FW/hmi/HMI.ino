@@ -57,7 +57,7 @@
 #define width 160
 #define fontHeight 8
 #define fontWidth 5
-
+ 
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(HMI_RX_PIN,HMI_TX_PIN); // pin 2 = TX, pin 3 = RX (unused)
 
@@ -74,25 +74,28 @@ uint32_t hmi_msCounts=0,war_msCounts;
 uint32_t hmi_prevMillis=0;
 int i=0;
 String currentODOString = "----";
-uint8_t ODOStringlength = 4;
+uint8_t ODOStringLength = 4;
 int bargraph=0;
 char *units = "km/h";
 uint8_t lastUnit = 2;
 String printTemp = "";
 #define initialTemp -1000
-#define initialTempValue "--.-"
+#define initialTempValue " --.-"
+#define initialSpeed 511
+#define initialTempValue "---"
+#define initialOdo 110000
+#define initialTempValue "-----"
 String unit = "C";
 int tempMantis = 0;
 uint8_t tempExp = 0; 
 int pl = 80,q = 94,h = 20;
 bool available_warning=false;
-
 void hmi_state_machine() {
  if(hmi_prevMillis!=millis()) {
   hmi_msCounts++;
   hmi_prevMillis=millis();
  }
-
+uint16_t prevSpeed=511;
 switch (hmi_stateVariable){
   
   case HMI_INIT:
@@ -153,14 +156,18 @@ switch (hmi_stateVariable){
         uint8_t TempUnit =  getTempUnit();
   
         drawBlinkers(BlinkerLeft, BlinkerRight);
-        drawSpeedo(Speed,SpeedUnit,MaxSpeed);
+        if(prevSpeed!=Speed){
+          prevSpeed=Speed;
+          drawSpeedo(Speed,SpeedUnit,MaxSpeed);
+        }
+        
         drawODO(Odometer, SpeedUnit);
         drawTemp(Temp, TempUnit);
         
         war_msCounts=0;
       }
       else{
-          Serial.println(war_msCounts);
+         Serial.println(war_msCounts);
         war_msCounts +=hmi_msCounts;
         if(war_msCounts>PDU_TIMEOUT&&!available_warning){
             available_warning=true;
@@ -204,8 +211,8 @@ void drawODO(uint32_t ODO, uint8_t SpeedUnit){
     ODO = ODO * 0.6213;
   }
   currentODOString = (String)ODO;
-  ODOStringLength = currentODOString.size();
-  tft.setCursor(width - fontWidth*ODOStringLength , height - fontHeight);
+  ODOStringLength = currentODOString.length()+1;
+  tft.setCursor(width - fontWidth*(ODOStringLength+4) , height - fontHeight);
   tft.setTextColor(TXT_COLOR, BG_COLOR);
   tft.setTextSize(1);
   tft.print(currentODOString);
@@ -217,13 +224,13 @@ void drawODO(uint32_t ODO, uint8_t SpeedUnit){
     tft.setCursor(width - 4*fontWidth , height - fontHeight);
     tft.setTextColor(TXT_COLOR, BG_COLOR);
     tft.setTextSize(1);
-    tft.print(" km");
+    tft.print("km");
     lastUnit = 1;
   }else{
     tft.setCursor(width - 4*fontWidth , height - fontHeight);
     tft.setTextColor(TXT_COLOR, BG_COLOR);
     tft.setTextSize(1);
-    tft.print(" mi");
+    tft.print("mi");
     lastUnit = 0;
   }
 }
@@ -281,7 +288,7 @@ void drawTemp(int Temp, uint8_t TempUnit){
     }
     tempMantis = Temp/10;
     tempExp = Temp%10;
-    printTemp = (String)tempMantis + "." + (String)tempExp+ char(247) + unit;
+    printTemp = " " + (String)tempMantis + "." + (String)tempExp+ char(247) + unit;
     tft.setCursor(0 , height - fontHeight);
     tft.setTextColor(TXT_COLOR, BG_COLOR);
     tft.setTextSize(1);
@@ -355,15 +362,27 @@ int ringMeter(int value, int vmin, int vmax, int x, int y, int r, char *units, b
     }
   }
 
-  char buf[10] = {0};
-  sprintf(buf, " %d ", value);
+  char buf[4] = {0};
+  int xx=x;
+  int yy=y;
+  if(value<10){
+    sprintf(buf, " %d ", value);
+    x+=12;
+  }
+  else if(value<100){
+    sprintf(buf, " %d ", value);
+    x+=7;
+  }
+  else{
+    sprintf(buf, "%d", value);
+    x+=12;
+  }
 
   tft.setCursor(x - 30, y - 10);
   tft.setTextColor(TXT_COLOR, BG_COLOR);
   tft.setTextSize(2);
   tft.print(buf);
-
-  tft.setCursor(x - 18, y + 8);
+  tft.setCursor(xx - 18, yy+ 8);
   tft.setTextColor(TXT_COLOR, BG_COLOR);
   tft.setTextSize(1);
   tft.print(units);
