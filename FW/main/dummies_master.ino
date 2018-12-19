@@ -29,7 +29,6 @@ void setup() {
   saveConfig();
 #endif
   EasyBuzzer.setPin(BUZZER_PIN);
-  EasyBuzzer.beep( 2000, 3);
 }
 
 void loop() {
