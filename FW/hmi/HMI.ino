@@ -120,7 +120,7 @@ switch (hmi_stateVariable){
     
     tft.setCursor(42, 57);
     tft.print("by");
-    
+    delay(500);
     tft.setCursor(50, 82);
     tft.print("VISTEON");
     
