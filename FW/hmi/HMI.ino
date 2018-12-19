@@ -224,6 +224,12 @@ void drawODO(uint32_t ODO, uint8_t SpeedUnit){
   tft.setCursor(width - fontWidth*(ODOStringLength+4) , height - fontHeight);
   tft.setTextColor(TXT_COLOR, BG_COLOR);
   tft.setTextSize(1);
+  if(ODO==100000&&SpeedUnit){
+    currentODOString="+99999";
+  }
+  else if(ODO==100000&&!SpeedUnit){
+    currentODOString="+62129";
+  } 
   tft.print(currentODOString);
 
   
