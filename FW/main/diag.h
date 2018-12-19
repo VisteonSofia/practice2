@@ -1,7 +1,7 @@
   #include <EEPROM.h>
 
   // ID of the settings block
-  #define CONFIG_VERSION 1
+  #define CONFIG_VERSION 2
   
   // Tell it where to store your config data in EEPROM
   #define CONFIG_START 32
@@ -9,7 +9,7 @@
   // Example settings structure
   struct StoreStruct {
     // The variables of your settings
-    uint16_t diag_version,mvs_spd_max_speed:9; //max_speed 512
+    uint16_t diag_version,mvs_spd_max_speed:9,mvs_cycles_in_demo; //max_speed 512
     uint32_t mvs_odo_range:17;
     bool mvs_spd_is_km, mvs_temp_is_celsius, mvs_is_acoustic_on;
     uint8_t mvs_end;
