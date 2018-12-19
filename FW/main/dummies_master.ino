@@ -35,14 +35,13 @@ void setup() {
 void loop() {
 #ifdef DEMO
   if(storage.mvs_cycles_in_demo){
-    demo();
+    de_state_machine();
     storage.mvs_cycles_in_demo--;
     saveConfig();
   }
   else{
 #endif
     blinker_state_machine();
-    ipc_state_machine();
     if(stringComplete){
       diag_execution(inputString);
       inputString = "";
@@ -56,7 +55,7 @@ void loop() {
  #ifdef DEMO
   }
  #endif
- 
+ ipc_state_machine();
 }
 
 void serialEvent() {
