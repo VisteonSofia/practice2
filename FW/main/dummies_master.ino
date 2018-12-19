@@ -4,6 +4,7 @@
 #define INT_SERIAL
 #define BUZZER_PIN 4
 #define ODOMETER
+#define DEMO
 
 #include "diag.h"
 #include "diag_execution.h"
@@ -32,12 +33,14 @@ void setup() {
 }
 
 void loop() {
+#ifdef DEMO
   if(storage.mvs_cycles_in_demo){
     demo();
     storage.mvs_cycles_in_demo--;
     saveConfig();
   }
   else{
+#endif
     blinker_state_machine();
     ipc_state_machine();
     if(stringComplete){
@@ -50,7 +53,9 @@ void loop() {
     EasyBuzzer.update();
     temp_state_machine();
     delay(10);
+ #ifdef DEMO
   }
+ #endif
  
 }
 
