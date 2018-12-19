@@ -41,13 +41,6 @@ void setup() {
   Wire.begin(IPC_ADDRESS);                // join i2c bus with address #8
   Wire.onReceive(receiveEvent); // register event
 
-  pinMode(LED_PIN, OUTPUT);
-  digitalWrite(LED_PIN, HIGH);
-
-  tft.initR(INITR_BLACKTAB);   // initialize a ST7735S chip, black tab
-  tft.setRotation(1);
-  tft.fillScreen(ST77XX_BLACK);
-  delay(100);
 }
 
 void loop() {
