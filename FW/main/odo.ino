@@ -52,19 +52,18 @@ void tm_state_machine()
 
        dist_temp += ((uint32_t)((uint32_t)PDU1_storage.DispSpeed * TM_IDLE_TIME)/3600);
       
-    
-    if (dist_temp > 1000)
-    {
-       dist_temp-=1000;
-       storage.mvs_odo_range++;
-       saveConfig();
-    }
-    PDU1_storage.DispDist=storage.mvs_odo_range;
-     
-     /* if (PDU1_storage.DispDist>=999)
+      if (storage.mvs_odo_range>=100000){
+        tm_stateVariable = TM_IDLE;
+        break;
+      }
+      if (dist_temp > 1000)
       {
-        PDU1_storage.DispDist = 0;
-      }*/
+         dist_temp-=1000;
+         storage.mvs_odo_range++;
+         saveConfig();
+      }
+      PDU1_storage.DispDist=storage.mvs_odo_range;
+     
       
       tm_stateVariable = TM_IDLE;
       tm_msCounts = 0;
