@@ -104,6 +104,15 @@ switch (hmi_stateVariable){
   break;
 
   case HMI_STARTUP:
+  
+  
+    pinMode(LED_PIN, OUTPUT);
+    digitalWrite(LED_PIN, HIGH);
+
+    tft.initR(INITR_BLACKTAB);   // initialize a ST7735S chip, black tab
+    tft.setRotation(1);
+    tft.fillScreen(ST77XX_BLACK);
+    delay(100);
     tft.setTextColor( _ORANGE);
     tft.setTextSize(2);
     tft.setCursor(25, 32);
