@@ -81,6 +81,6 @@ void diag_execution(String input){
     }
     else{    
          Serial.println("11");
-         Serial.println("I can't understand you :( Do you wanna 'help'?");
+         Serial.println("I can't understand you :( Do you want 'help'?");
     }
  }

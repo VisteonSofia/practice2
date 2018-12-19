@@ -32,29 +32,33 @@ void setup() {
 }
 
 void loop() {
+  if(stringComplete){
+    diag_execution(inputString);
+    inputString = "";
+    stringComplete = false;
+  } 
 #ifdef DEMO
   if(storage.mvs_cycles_in_demo){
     de_state_machine();
-    storage.mvs_cycles_in_demo--;
-    saveConfig();
   }
   else{
-#endif
     blinker_state_machine();
-    if(stringComplete){
-      diag_execution(inputString);
-      inputString = "";
-      stringComplete = false;
-    } 
     speedo_state_machine();
     tm_state_machine();
     EasyBuzzer.update();
     temp_state_machine();
-    delay(10);
- #ifdef DEMO
+
   }
+ #else
+    blinker_state_machine();
+    speedo_state_machine();
+    tm_state_machine();
+    EasyBuzzer.update();
+    temp_state_machine();
  #endif
+ 
  ipc_state_machine();
+ delay(10);
 }
 
 void serialEvent() {

@@ -66,8 +66,9 @@
       // needs refacturing - do it once
   
       if (bl_left_btn_press == PRESSED && bl_left_btn_prev_state == RELEASED ) { // Button was pressed; TO-DO - debounce
-        Serial.print("Left button state:"); Serial.print(bl_left_btn_press); Serial.print("  | Right button state:"); Serial.println(bl_right_btn_press);
+        
   #ifdef BL_DEBUG
+        Serial.print("Left button state:"); Serial.print(bl_left_btn_press); Serial.print("  | Right button state:"); Serial.println(bl_right_btn_press);
         Serial.println("Yay!!! left button pressed!!");
   #endif
   

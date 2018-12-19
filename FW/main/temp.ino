@@ -15,7 +15,7 @@ byte present = 0;
 byte type_s;
 byte data_temp[12];
 byte addr[8];
-float celsius, fahrenheit;
+float celsius;
 
 void temp_state_machine() {
  if(tp_prevMillis!=millis()) {
@@ -142,13 +142,13 @@ switch (tp_stateVariable){
       }
       celsius = (float)raw / 16.0;
       celsius-=7.4;//correction
-      fahrenheit = celsius * 1.8 + 32.0;
-      if(storage.mvs_temp_is_celsius){
+//      fahrenheit = celsius * 1.8 + 32.0;
+//      if(storage.mvs_temp_is_celsius){
         PDU1_storage.DispTemp= celsius*10;
-      }
-      else{
-        PDU1_storage.DispTemp= fahrenheit*10;
-      }
+//      }
+//      else{
+//        PDU1_storage.DispTemp= fahrenheit*10;
+//      }
       tp_stateVariable = TP_IDLE;
       #ifdef TP_DEBUG
         Serial.print("PDU temp: ");
@@ -157,8 +157,7 @@ switch (tp_stateVariable){
         Serial.print("  Temperature = ");
         Serial.print(celsius);
         Serial.print(" Celsius, ");
-        Serial.print(fahrenheit);
-        Serial.println(" Fahrenheit");
+
        
        #endif
       tp_stateVariable = TP_IDLE;
